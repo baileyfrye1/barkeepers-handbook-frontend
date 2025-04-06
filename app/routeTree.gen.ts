@@ -11,35 +11,29 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SignUpImport } from './routes/sign-up'
-import { Route as SignInImport } from './routes/sign-in'
-import { Route as ProfileImport } from './routes/profile'
-import { Route as AboutImport } from './routes/about'
+import { Route as SettingsImport } from './routes/settings'
+import { Route as DashboardImport } from './routes/dashboard'
+import { Route as CocktailsImport } from './routes/cocktails'
 import { Route as IndexImport } from './routes/index'
+import { Route as CocktailsCocktailIdImport } from './routes/cocktails.$cocktailId'
 
 // Create/Update Routes
 
-const SignUpRoute = SignUpImport.update({
-  id: '/sign-up',
-  path: '/sign-up',
+const SettingsRoute = SettingsImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRoute,
 } as any)
 
-const SignInRoute = SignInImport.update({
-  id: '/sign-in',
-  path: '/sign-in',
+const DashboardRoute = DashboardImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProfileRoute = ProfileImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
+const CocktailsRoute = CocktailsImport.update({
+  id: '/cocktails',
+  path: '/cocktails',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -47,6 +41,12 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const CocktailsCocktailIdRoute = CocktailsCocktailIdImport.update({
+  id: '/$cocktailId',
+  path: '/$cocktailId',
+  getParentRoute: () => CocktailsRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -60,87 +60,108 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
+    '/cocktails': {
+      id: '/cocktails'
+      path: '/cocktails'
+      fullPath: '/cocktails'
+      preLoaderRoute: typeof CocktailsImport
       parentRoute: typeof rootRoute
     }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileImport
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardImport
       parentRoute: typeof rootRoute
     }
-    '/sign-in': {
-      id: '/sign-in'
-      path: '/sign-in'
-      fullPath: '/sign-in'
-      preLoaderRoute: typeof SignInImport
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsImport
       parentRoute: typeof rootRoute
     }
-    '/sign-up': {
-      id: '/sign-up'
-      path: '/sign-up'
-      fullPath: '/sign-up'
-      preLoaderRoute: typeof SignUpImport
-      parentRoute: typeof rootRoute
+    '/cocktails/$cocktailId': {
+      id: '/cocktails/$cocktailId'
+      path: '/$cocktailId'
+      fullPath: '/cocktails/$cocktailId'
+      preLoaderRoute: typeof CocktailsCocktailIdImport
+      parentRoute: typeof CocktailsImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface CocktailsRouteChildren {
+  CocktailsCocktailIdRoute: typeof CocktailsCocktailIdRoute
+}
+
+const CocktailsRouteChildren: CocktailsRouteChildren = {
+  CocktailsCocktailIdRoute: CocktailsCocktailIdRoute,
+}
+
+const CocktailsRouteWithChildren = CocktailsRoute._addFileChildren(
+  CocktailsRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/profile': typeof ProfileRoute
-  '/sign-in': typeof SignInRoute
-  '/sign-up': typeof SignUpRoute
+  '/cocktails': typeof CocktailsRouteWithChildren
+  '/dashboard': typeof DashboardRoute
+  '/settings': typeof SettingsRoute
+  '/cocktails/$cocktailId': typeof CocktailsCocktailIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/profile': typeof ProfileRoute
-  '/sign-in': typeof SignInRoute
-  '/sign-up': typeof SignUpRoute
+  '/cocktails': typeof CocktailsRouteWithChildren
+  '/dashboard': typeof DashboardRoute
+  '/settings': typeof SettingsRoute
+  '/cocktails/$cocktailId': typeof CocktailsCocktailIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/profile': typeof ProfileRoute
-  '/sign-in': typeof SignInRoute
-  '/sign-up': typeof SignUpRoute
+  '/cocktails': typeof CocktailsRouteWithChildren
+  '/dashboard': typeof DashboardRoute
+  '/settings': typeof SettingsRoute
+  '/cocktails/$cocktailId': typeof CocktailsCocktailIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/profile' | '/sign-in' | '/sign-up'
+  fullPaths:
+    | '/'
+    | '/cocktails'
+    | '/dashboard'
+    | '/settings'
+    | '/cocktails/$cocktailId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/profile' | '/sign-in' | '/sign-up'
-  id: '__root__' | '/' | '/about' | '/profile' | '/sign-in' | '/sign-up'
+  to: '/' | '/cocktails' | '/dashboard' | '/settings' | '/cocktails/$cocktailId'
+  id:
+    | '__root__'
+    | '/'
+    | '/cocktails'
+    | '/dashboard'
+    | '/settings'
+    | '/cocktails/$cocktailId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
-  ProfileRoute: typeof ProfileRoute
-  SignInRoute: typeof SignInRoute
-  SignUpRoute: typeof SignUpRoute
+  CocktailsRoute: typeof CocktailsRouteWithChildren
+  DashboardRoute: typeof DashboardRoute
+  SettingsRoute: typeof SettingsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-  ProfileRoute: ProfileRoute,
-  SignInRoute: SignInRoute,
-  SignUpRoute: SignUpRoute,
+  CocktailsRoute: CocktailsRouteWithChildren,
+  DashboardRoute: DashboardRoute,
+  SettingsRoute: SettingsRoute,
 }
 
 export const routeTree = rootRoute
@@ -154,26 +175,29 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about",
-        "/profile",
-        "/sign-in",
-        "/sign-up"
+        "/cocktails",
+        "/dashboard",
+        "/settings"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/cocktails": {
+      "filePath": "cocktails.tsx",
+      "children": [
+        "/cocktails/$cocktailId"
+      ]
     },
-    "/profile": {
-      "filePath": "profile.tsx"
+    "/dashboard": {
+      "filePath": "dashboard.tsx"
     },
-    "/sign-in": {
-      "filePath": "sign-in.tsx"
+    "/settings": {
+      "filePath": "settings.tsx"
     },
-    "/sign-up": {
-      "filePath": "sign-up.tsx"
+    "/cocktails/$cocktailId": {
+      "filePath": "cocktails.$cocktailId.tsx",
+      "parent": "/cocktails"
     }
   }
 }

@@ -2,22 +2,19 @@ import CocktailsGrid from '@/components/CocktailsGrid';
 import axiosClient from '@/lib/axiosClient';
 import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/')({
-  component: Home,
+export const Route = createFileRoute('/cocktails')({
+  component: RouteComponent,
   loader: async () => {
     const response = await axiosClient<[]>('cocktails');
     return response.data;
   },
 });
 
-function Home() {
+function RouteComponent() {
   const cocktails = Route.useLoaderData();
   return (
-    <>
-      <h1>Cocktails</h1>
-      <div className='grid grid-cols-3'>
-        <CocktailsGrid cocktails={cocktails} />
-      </div>
-    </>
+    <div className='grid grid-cols-3'>
+      <CocktailsGrid cocktails={cocktails} />
+    </div>
   );
 }

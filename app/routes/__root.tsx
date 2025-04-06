@@ -6,12 +6,17 @@ import {
   HeadContent,
   Scripts,
 } from '@tanstack/react-router';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 import { Toaster } from 'sonner';
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 import appCss from '@/styles/app.css?url';
 import { QueryClient } from '@tanstack/react-query';
 import { ClerkProvider } from '@clerk/tanstack-react-start';
+import { authStateFn, fetchClerkAuth } from '@/lib/actions';
+import { DefaultCatchBoundary } from '@/components/DefaultCatchBoundary';
+import { NotFound } from '@/components/NotFound';
+import Container from '@/components/Container';
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
@@ -35,6 +40,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         },
       ],
     }),
+    beforeLoad: async () => {
+      const { userId } = await fetchClerkAuth();
+
+      return { userId };
+    },
+    errorComponent: (props) => {
+      return (
+        <RootDocument>
+          <DefaultCatchBoundary {...props} />
+        </RootDocument>
+      );
+    },
+    notFoundComponent: () => <NotFound />,
     component: RootComponent,
   },
 );
@@ -56,7 +74,8 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         </head>
         <body>
           <Navbar />
-          {children}
+          <Container>{children}</Container>
+          <TanStackRouterDevtools position='bottom-right' />
           <Scripts />
           <Toaster richColors />
         </body>

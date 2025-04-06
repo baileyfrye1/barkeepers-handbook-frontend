@@ -8,9 +8,11 @@ import { createClerkHandler } from '@clerk/tanstack-react-start/server';
 
 import { createRouter } from './router';
 
-export default createClerkHandler(
-  createStartHandler({
-    createRouter,
-    getRouterManifest,
-  }),
-)(defaultStreamHandler);
+const handler = createStartHandler({
+  createRouter,
+  getRouterManifest,
+});
+
+const clerkHandler = createClerkHandler(handler);
+
+export default clerkHandler(defaultStreamHandler);
