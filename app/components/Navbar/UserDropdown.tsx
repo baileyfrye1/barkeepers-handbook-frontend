@@ -5,7 +5,14 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
 } from '../ui/dropdown-menu';
-import { SignOutButton, useUser } from '@clerk/tanstack-react-start';
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignOutButton,
+  SignUpButton,
+  useUser,
+} from '@clerk/tanstack-react-start';
 import { Link } from '@tanstack/react-router';
 import { User, AlignLeft } from 'lucide-react';
 import { Button } from '../ui/button';
@@ -31,16 +38,29 @@ const UserDropdown = () => {
         <DropdownMenuItem>
           <Link to='/cocktails'>Cocktails</Link>
         </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link to='/cocktails/cocktail-builder'>Cocktail Builder</Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Link to='/dashboard'>Dashboard</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link to='/settings'>Settings</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem className='cursor-pointer'>
-          <SignOutButton />
-        </DropdownMenuItem>
+        <SignedIn>
+          <DropdownMenuItem>
+            <Link to='/dashboard'>Dashboard</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link to='/profile'>Profile</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem className='cursor-pointer'>
+            <SignOutButton />
+          </DropdownMenuItem>
+        </SignedIn>
+        <SignedOut>
+          <DropdownMenuItem>
+            <SignInButton>Sign In</SignInButton>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <SignUpButton>Register</SignUpButton>
+          </DropdownMenuItem>
+        </SignedOut>
       </DropdownMenuContent>
     </DropdownMenu>
   );

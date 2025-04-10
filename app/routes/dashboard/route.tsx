@@ -1,0 +1,21 @@
+import { authStateFn } from '@/lib/actions';
+import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
+
+export const Route = createFileRoute('/dashboard')({
+  component: RouteComponent,
+  beforeLoad: () => authStateFn(),
+});
+
+function RouteComponent() {
+  return (
+    <div className='grid grid-cols-3'>
+      <aside className='col-span-1 flex flex-col'>
+        <Link to='/dashboard/cocktail-creator'>Create Cocktail</Link>
+        <Link to='/dashboard/manage'>My Cocktails</Link>
+      </aside>
+      <section className='col-span-2'>
+        <Outlet />
+      </section>
+    </div>
+  );
+}

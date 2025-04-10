@@ -1,7 +1,8 @@
 import { Link } from '@tanstack/react-router';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { type CocktailListType } from '@/schemas/CocktailSchemas';
 
-const CocktailsGrid = ({ cocktails }: { cocktails: [] }) => {
+const CocktailsGrid = ({ cocktails }: { cocktails: CocktailListType }) => {
   return (
     <>
       {cocktails.map((cocktail) => {

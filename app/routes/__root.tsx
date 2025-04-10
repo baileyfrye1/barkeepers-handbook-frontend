@@ -13,7 +13,7 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import appCss from '@/styles/app.css?url';
 import { QueryClient } from '@tanstack/react-query';
 import { ClerkProvider } from '@clerk/tanstack-react-start';
-import { authStateFn, fetchClerkAuth } from '@/lib/actions';
+import { fetchClerkAuth } from '@/lib/actions';
 import { DefaultCatchBoundary } from '@/components/DefaultCatchBoundary';
 import { NotFound } from '@/components/NotFound';
 import Container from '@/components/Container';

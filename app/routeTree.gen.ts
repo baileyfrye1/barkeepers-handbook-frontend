@@ -11,29 +11,27 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SettingsImport } from './routes/settings'
-import { Route as DashboardImport } from './routes/dashboard'
-import { Route as CocktailsImport } from './routes/cocktails'
+import { Route as ProfileImport } from './routes/profile'
+import { Route as DashboardRouteImport } from './routes/dashboard/route'
 import { Route as IndexImport } from './routes/index'
-import { Route as CocktailsCocktailIdImport } from './routes/cocktails.$cocktailId'
+import { Route as DashboardIndexImport } from './routes/dashboard/index'
+import { Route as CocktailsIndexImport } from './routes/cocktails/index'
+import { Route as DashboardManageImport } from './routes/dashboard/manage'
+import { Route as DashboardCocktailCreatorImport } from './routes/dashboard/cocktail-creator'
+import { Route as CocktailsCocktailBuilderImport } from './routes/cocktails/cocktail-builder'
+import { Route as CocktailsCocktailIdImport } from './routes/cocktails/$cocktailId'
 
 // Create/Update Routes
 
-const SettingsRoute = SettingsImport.update({
-  id: '/settings',
-  path: '/settings',
+const ProfileRoute = ProfileImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRoute,
 } as any)
 
-const DashboardRoute = DashboardImport.update({
+const DashboardRouteRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const CocktailsRoute = CocktailsImport.update({
-  id: '/cocktails',
-  path: '/cocktails',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -43,10 +41,40 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const DashboardIndexRoute = DashboardIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+
+const CocktailsIndexRoute = CocktailsIndexImport.update({
+  id: '/cocktails/',
+  path: '/cocktails/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardManageRoute = DashboardManageImport.update({
+  id: '/manage',
+  path: '/manage',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+
+const DashboardCocktailCreatorRoute = DashboardCocktailCreatorImport.update({
+  id: '/cocktail-creator',
+  path: '/cocktail-creator',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+
+const CocktailsCocktailBuilderRoute = CocktailsCocktailBuilderImport.update({
+  id: '/cocktails/cocktail-builder',
+  path: '/cocktails/cocktail-builder',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const CocktailsCocktailIdRoute = CocktailsCocktailIdImport.update({
-  id: '/$cocktailId',
-  path: '/$cocktailId',
-  getParentRoute: () => CocktailsRoute,
+  id: '/cocktails/$cocktailId',
+  path: '/cocktails/$cocktailId',
+  getParentRoute: () => rootRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -60,108 +88,171 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/cocktails': {
-      id: '/cocktails'
-      path: '/cocktails'
-      fullPath: '/cocktails'
-      preLoaderRoute: typeof CocktailsImport
-      parentRoute: typeof rootRoute
-    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardImport
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRoute
     }
-    '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsImport
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileImport
       parentRoute: typeof rootRoute
     }
     '/cocktails/$cocktailId': {
       id: '/cocktails/$cocktailId'
-      path: '/$cocktailId'
+      path: '/cocktails/$cocktailId'
       fullPath: '/cocktails/$cocktailId'
       preLoaderRoute: typeof CocktailsCocktailIdImport
-      parentRoute: typeof CocktailsImport
+      parentRoute: typeof rootRoute
+    }
+    '/cocktails/cocktail-builder': {
+      id: '/cocktails/cocktail-builder'
+      path: '/cocktails/cocktail-builder'
+      fullPath: '/cocktails/cocktail-builder'
+      preLoaderRoute: typeof CocktailsCocktailBuilderImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/cocktail-creator': {
+      id: '/dashboard/cocktail-creator'
+      path: '/cocktail-creator'
+      fullPath: '/dashboard/cocktail-creator'
+      preLoaderRoute: typeof DashboardCocktailCreatorImport
+      parentRoute: typeof DashboardRouteImport
+    }
+    '/dashboard/manage': {
+      id: '/dashboard/manage'
+      path: '/manage'
+      fullPath: '/dashboard/manage'
+      preLoaderRoute: typeof DashboardManageImport
+      parentRoute: typeof DashboardRouteImport
+    }
+    '/cocktails/': {
+      id: '/cocktails/'
+      path: '/cocktails'
+      fullPath: '/cocktails'
+      preLoaderRoute: typeof CocktailsIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexImport
+      parentRoute: typeof DashboardRouteImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface CocktailsRouteChildren {
-  CocktailsCocktailIdRoute: typeof CocktailsCocktailIdRoute
+interface DashboardRouteRouteChildren {
+  DashboardCocktailCreatorRoute: typeof DashboardCocktailCreatorRoute
+  DashboardManageRoute: typeof DashboardManageRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
-const CocktailsRouteChildren: CocktailsRouteChildren = {
-  CocktailsCocktailIdRoute: CocktailsCocktailIdRoute,
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardCocktailCreatorRoute: DashboardCocktailCreatorRoute,
+  DashboardManageRoute: DashboardManageRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
 }
 
-const CocktailsRouteWithChildren = CocktailsRoute._addFileChildren(
-  CocktailsRouteChildren,
+const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
+  DashboardRouteRouteChildren,
 )
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/cocktails': typeof CocktailsRouteWithChildren
-  '/dashboard': typeof DashboardRoute
-  '/settings': typeof SettingsRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/profile': typeof ProfileRoute
   '/cocktails/$cocktailId': typeof CocktailsCocktailIdRoute
+  '/cocktails/cocktail-builder': typeof CocktailsCocktailBuilderRoute
+  '/dashboard/cocktail-creator': typeof DashboardCocktailCreatorRoute
+  '/dashboard/manage': typeof DashboardManageRoute
+  '/cocktails': typeof CocktailsIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/cocktails': typeof CocktailsRouteWithChildren
-  '/dashboard': typeof DashboardRoute
-  '/settings': typeof SettingsRoute
+  '/profile': typeof ProfileRoute
   '/cocktails/$cocktailId': typeof CocktailsCocktailIdRoute
+  '/cocktails/cocktail-builder': typeof CocktailsCocktailBuilderRoute
+  '/dashboard/cocktail-creator': typeof DashboardCocktailCreatorRoute
+  '/dashboard/manage': typeof DashboardManageRoute
+  '/cocktails': typeof CocktailsIndexRoute
+  '/dashboard': typeof DashboardIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/cocktails': typeof CocktailsRouteWithChildren
-  '/dashboard': typeof DashboardRoute
-  '/settings': typeof SettingsRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/profile': typeof ProfileRoute
   '/cocktails/$cocktailId': typeof CocktailsCocktailIdRoute
+  '/cocktails/cocktail-builder': typeof CocktailsCocktailBuilderRoute
+  '/dashboard/cocktail-creator': typeof DashboardCocktailCreatorRoute
+  '/dashboard/manage': typeof DashboardManageRoute
+  '/cocktails/': typeof CocktailsIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dashboard'
+    | '/profile'
+    | '/cocktails/$cocktailId'
+    | '/cocktails/cocktail-builder'
+    | '/dashboard/cocktail-creator'
+    | '/dashboard/manage'
+    | '/cocktails'
+    | '/dashboard/'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/profile'
+    | '/cocktails/$cocktailId'
+    | '/cocktails/cocktail-builder'
+    | '/dashboard/cocktail-creator'
+    | '/dashboard/manage'
     | '/cocktails'
     | '/dashboard'
-    | '/settings'
-    | '/cocktails/$cocktailId'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cocktails' | '/dashboard' | '/settings' | '/cocktails/$cocktailId'
   id:
     | '__root__'
     | '/'
-    | '/cocktails'
     | '/dashboard'
-    | '/settings'
+    | '/profile'
     | '/cocktails/$cocktailId'
+    | '/cocktails/cocktail-builder'
+    | '/dashboard/cocktail-creator'
+    | '/dashboard/manage'
+    | '/cocktails/'
+    | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CocktailsRoute: typeof CocktailsRouteWithChildren
-  DashboardRoute: typeof DashboardRoute
-  SettingsRoute: typeof SettingsRoute
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
+  ProfileRoute: typeof ProfileRoute
+  CocktailsCocktailIdRoute: typeof CocktailsCocktailIdRoute
+  CocktailsCocktailBuilderRoute: typeof CocktailsCocktailBuilderRoute
+  CocktailsIndexRoute: typeof CocktailsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CocktailsRoute: CocktailsRouteWithChildren,
-  DashboardRoute: DashboardRoute,
-  SettingsRoute: SettingsRoute,
+  DashboardRouteRoute: DashboardRouteRouteWithChildren,
+  ProfileRoute: ProfileRoute,
+  CocktailsCocktailIdRoute: CocktailsCocktailIdRoute,
+  CocktailsCocktailBuilderRoute: CocktailsCocktailBuilderRoute,
+  CocktailsIndexRoute: CocktailsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -175,29 +266,47 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/cocktails",
         "/dashboard",
-        "/settings"
+        "/profile",
+        "/cocktails/$cocktailId",
+        "/cocktails/cocktail-builder",
+        "/cocktails/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/cocktails": {
-      "filePath": "cocktails.tsx",
+    "/dashboard": {
+      "filePath": "dashboard/route.tsx",
       "children": [
-        "/cocktails/$cocktailId"
+        "/dashboard/cocktail-creator",
+        "/dashboard/manage",
+        "/dashboard/"
       ]
     },
-    "/dashboard": {
-      "filePath": "dashboard.tsx"
-    },
-    "/settings": {
-      "filePath": "settings.tsx"
+    "/profile": {
+      "filePath": "profile.tsx"
     },
     "/cocktails/$cocktailId": {
-      "filePath": "cocktails.$cocktailId.tsx",
-      "parent": "/cocktails"
+      "filePath": "cocktails/$cocktailId.tsx"
+    },
+    "/cocktails/cocktail-builder": {
+      "filePath": "cocktails/cocktail-builder.tsx"
+    },
+    "/dashboard/cocktail-creator": {
+      "filePath": "dashboard/cocktail-creator.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/manage": {
+      "filePath": "dashboard/manage.tsx",
+      "parent": "/dashboard"
+    },
+    "/cocktails/": {
+      "filePath": "cocktails/index.tsx"
+    },
+    "/dashboard/": {
+      "filePath": "dashboard/index.tsx",
+      "parent": "/dashboard"
     }
   }
 }
