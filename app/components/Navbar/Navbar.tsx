@@ -5,17 +5,24 @@ import Container from '../Container';
 
 const Navbar = () => {
   return (
-    <Container>
-      <nav className='flex justify-between py-4'>
-        <Link to='/'>
-          <h1 className='text-xl font-bold uppercase'>Barkeepers Handbook</h1>
-        </Link>
+    <nav className='py-8 border-b'>
+      <Container className='flex justify-between'>
+        <div className='flex gap-8 items-center'>
+          <Link to='/'>
+            <h1 className='text-base font-bold uppercase border p-2 rounded-lg'>
+              Barkeepers Handbook
+            </h1>
+          </Link>
+          <Link to='/cocktails'>Cocktails</Link>
+          <Link to='/cocktails/cocktail-builder'>Cocktail Builder</Link>
+        </div>
 
-        <NavSearch />
-
-        <UserDropdown />
-      </nav>
-    </Container>
+        <div className='flex gap-2'>
+          <NavSearch />
+          <UserDropdown />
+        </div>
+      </Container>
+    </nav>
   );
 };
 

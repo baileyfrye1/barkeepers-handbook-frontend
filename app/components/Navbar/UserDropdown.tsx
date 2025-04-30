@@ -14,7 +14,7 @@ import {
   useUser,
 } from '@clerk/tanstack-react-start';
 import { Link } from '@tanstack/react-router';
-import { User, AlignLeft } from 'lucide-react';
+import { User } from 'lucide-react';
 import { Button } from '../ui/button';
 
 const UserDropdown = () => {
@@ -23,10 +23,9 @@ const UserDropdown = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant='outline'
+          variant='ghost'
           className='cursor-pointer flex gap-4 max-w-[100px]'
         >
-          <AlignLeft className='h-6! w-6! rounded-full object-cover' />
           {user?.hasImage ? (
             <img src={user?.imageUrl} className='h-6 rounded-full' />
           ) : (
@@ -35,13 +34,6 @@ const UserDropdown = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem>
-          <Link to='/cocktails'>Cocktails</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link to='/cocktails/cocktail-builder'>Cocktail Builder</Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
         <SignedIn>
           <DropdownMenuItem>
             <Link to='/dashboard'>Dashboard</Link>
@@ -49,7 +41,7 @@ const UserDropdown = () => {
           <DropdownMenuItem>
             <Link to='/profile'>Profile</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className='cursor-pointer'>
+          <DropdownMenuItem>
             <SignOutButton />
           </DropdownMenuItem>
         </SignedIn>
