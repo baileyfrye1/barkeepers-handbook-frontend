@@ -6,6 +6,7 @@ import { createFileRoute, useRouterState } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/')({
   component: Home,
+    pendingComponent: Loader,
   loader: async () => {
     const response = await axiosClient<CocktailListType>('cocktails/featured');
     return response.data;
@@ -14,12 +15,11 @@ export const Route = createFileRoute('/')({
 
 function Home() {
   const cocktails = Route.useLoaderData();
-  const { isLoading } = useRouterState();
   return (
     <>
       <h2 className='text-2xl font-medium'>Featured Cocktails</h2>
       <div className='grid grid-cols-3 gap-4'>
-        {isLoading ? <Loader /> : <CocktailsGrid cocktails={cocktails} />}
+          <CocktailsGrid cocktails={cocktails} />
       </div>
     </>
   );
