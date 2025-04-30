@@ -1,25 +1,21 @@
-import CocktailsGrid from '@/components/CocktailsGrid';
+import { AllCocktailsGrid } from '@/components/Cocktails/CocktailsGrid';
 import Loader from '@/components/Loader';
-import axiosClient from '@/lib/axiosClient';
-import { type CocktailListType } from '@/schemas/CocktailSchemas';
 import { createFileRoute } from '@tanstack/react-router';
+import { Suspense } from 'react';
 
 export const Route = createFileRoute('/cocktails/')({
   component: RouteComponent,
-  pendingComponent: Loader,
-  loader: async ({ location }) => {
-    const response = await axiosClient<CocktailListType>(
-      `cocktails${location.search ? location.searchStr : ''}`,
-    );
-    return response.data;
-  },
+  head: () => ({
+    meta: [{ title: 'Cocktails • Barkeepers Handbook' }],
+  }),
 });
 
 function RouteComponent() {
-  const cocktails = Route.useLoaderData();
   return (
     <div className='grid grid-cols-3 gap-4'>
-      <CocktailsGrid cocktails={cocktails.cocktails} />
+      <Suspense fallback={<Loader />}>
+        <AllCocktailsGrid />
+      </Suspense>
     </div>
   );
 }

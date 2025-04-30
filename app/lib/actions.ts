@@ -1,4 +1,4 @@
-import { getAuth, clerkClient, User } from '@clerk/tanstack-react-start/server';
+import { getAuth } from '@clerk/tanstack-react-start/server';
 import { redirect } from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/react-start';
 import { getWebRequest } from '@tanstack/react-start/server';

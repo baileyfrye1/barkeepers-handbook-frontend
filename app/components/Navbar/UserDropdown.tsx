@@ -14,7 +14,7 @@ import {
   useUser,
 } from '@clerk/tanstack-react-start';
 import { Link } from '@tanstack/react-router';
-import { User, AlignLeft } from 'lucide-react';
+import { User } from 'lucide-react';
 import { Button } from '../ui/button';
 
 const UserDropdown = () => {
@@ -41,7 +41,7 @@ const UserDropdown = () => {
           <DropdownMenuItem>
             <Link to='/profile'>Profile</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className='cursor-pointer'>
+          <DropdownMenuItem>
             <SignOutButton />
           </DropdownMenuItem>
         </SignedIn>

@@ -1,6 +1,6 @@
-import { capitalizeWord } from "@/lib/format";
-import { IngredientType } from "@/schemas/CocktailSchemas";
-import Fraction from "fraction.js";
+import { capitalizeWord } from 'utils/format';
+import { IngredientType } from '@/schemas/CocktailSchemas';
+import Fraction from 'fraction.js';
 
 const Ingredient = ({ ingredient }: { ingredient: IngredientType }) => {
   const {
@@ -10,9 +10,9 @@ const Ingredient = ({ ingredient }: { ingredient: IngredientType }) => {
   } = ingredient;
 
   const parsedAmount =
-    amount % 1 !== 0 ? new Fraction(amount).toFraction() : amount;
+    amount % 1 !== 0 ? new Fraction(amount).toFraction(true) : amount;
 
-  if (name === "Absinthe" && unit === "rinse") {
+  if (name === 'Absinthe' && unit === 'rinse') {
     return (
       <li>
         {name} {capitalizeWord(unit)}
