@@ -27,9 +27,9 @@ export const fetchAllCocktails = createServerFn({ method: 'GET' })
     ).data;
   });
 
-export const allCocktailsQueryOptions = (page: number, search: string) => {
+export const allCocktailsQueryOptions = (page: number = 1, search?: string) => {
   return queryOptions({
-    queryKey: ['cocktails'],
+    queryKey: ['cocktails', page, search],
     queryFn: () => fetchAllCocktails({ data: { page, search } }),
   });
 };
