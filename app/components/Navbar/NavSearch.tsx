@@ -1,18 +1,11 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Input } from '../ui/input';
-import {
-  useRouter,
-  useSearch,
-  useLocation,
-  useMatch,
-} from '@tanstack/react-router';
+import { useRouter } from '@tanstack/react-router';
 import { useDebouncedCallback } from 'use-debounce';
 
 const NavSearch = () => {
-  const location = useLocation();
   const { navigate } = useRouter();
-  // const searchParams = useSearch({ from: '/cocktails' });
   const [search, setSearch] = useState('');
 
   const handleSearch = useDebouncedCallback((value: string) => {
@@ -30,12 +23,6 @@ const NavSearch = () => {
       search: { search },
     });
   }, 500);
-
-  // useEffect(() => {
-  //   if (!searchParams.search) {
-  //     setSearch('');
-  //   }
-  // }, [searchParams.search]);
 
   return (
     <Input
