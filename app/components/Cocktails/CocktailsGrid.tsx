@@ -4,11 +4,18 @@ import {
   featuredCocktailsQueryOptions,
 } from '@/lib/queries/cocktails';
 import CocktailCard from './CocktailCard';
+import { QueryParamsType } from '@/schemas/QueryParamsSchema';
 
-export const AllCocktailsGrid = () => {
+export const AllCocktailsGrid = ({
+  queryParams,
+}: {
+  queryParams: QueryParamsType;
+}) => {
   const {
     data: { cocktails },
-  } = useSuspenseQuery(allCocktailsQueryOptions());
+  } = useSuspenseQuery(
+    allCocktailsQueryOptions(queryParams.page, queryParams.search),
+  );
   return (
     <>
       {cocktails.map((cocktail) => {
