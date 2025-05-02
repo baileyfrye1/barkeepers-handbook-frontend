@@ -19,7 +19,7 @@ export const AllCocktailsGrid = ({
   return (
     <>
       {cocktails.map((cocktail) => {
-        return <CocktailCard cocktail={cocktail} />;
+        return <CocktailCard key={cocktail.id} cocktail={cocktail} />;
       })}
     </>
   );
@@ -30,7 +30,7 @@ export const FeaturedCocktailsGrid = () => {
   return (
     <>
       {data.map((cocktail) => {
-        return <CocktailCard cocktail={cocktail} />;
+        return <CocktailCard key={cocktail.id} cocktail={cocktail} />;
       })}
     </>
   );

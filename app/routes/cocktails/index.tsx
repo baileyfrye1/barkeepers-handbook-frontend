@@ -1,5 +1,6 @@
 import { AllCocktailsGrid } from '@/components/Cocktails/CocktailsGrid';
 import Loader from '@/components/Loader';
+import PaginationMenu from '@/components/Pagination';
 import { queryParamsSchema } from '@/schemas/QueryParamsSchema';
 import { createFileRoute } from '@tanstack/react-router';
 import { Suspense } from 'react';
@@ -19,6 +20,7 @@ function RouteComponent() {
       <Suspense fallback={<Loader />}>
         <AllCocktailsGrid queryParams={params} />
       </Suspense>
+      <PaginationMenu totalCount={13} />
     </div>
   );
 }

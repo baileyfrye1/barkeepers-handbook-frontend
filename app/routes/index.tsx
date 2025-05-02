@@ -1,7 +1,6 @@
 import { FeaturedCocktailsGrid } from '@/components/Cocktails/CocktailsGrid';
 import Loader from '@/components/Loader';
-import { featuredCocktailsQueryOptions } from '@/lib/queries/cocktails';
-import { createFileRoute, useRouterState } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import { Suspense } from 'react';
 
 export const Route = createFileRoute('/')({

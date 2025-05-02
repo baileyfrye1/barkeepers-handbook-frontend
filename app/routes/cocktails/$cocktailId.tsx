@@ -33,7 +33,12 @@ function RouteComponent() {
           <h2 className='font-bold text-2xl'>Ingredients</h2>
           <ul>
             {cocktail.cocktailIngredients.map((ingredient) => {
-              return <Ingredient key={cocktail.id} ingredient={ingredient} />;
+              return (
+                <Ingredient
+                  key={ingredient.ingredient.name}
+                  ingredient={ingredient}
+                />
+              );
             })}
           </ul>
         </section>
