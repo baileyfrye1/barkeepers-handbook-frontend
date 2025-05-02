@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { User } from "../types/types";
+import { create } from 'zustand';
+import { User } from '../types/types';
 
 interface UserStoreType {
   user: User;
@@ -7,12 +7,12 @@ interface UserStoreType {
 }
 
 const initialState: User = {
-  created_at: "",
-  email: "",
-  id: "",
-  phone: "",
-  role: "",
-  updated_at: "",
+  created_at: '',
+  email: '',
+  id: '',
+  phone: '',
+  role: '',
+  updated_at: '',
 };
 
 export const useUserStore = create<UserStoreType>((set) => ({

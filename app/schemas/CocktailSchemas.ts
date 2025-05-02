@@ -17,12 +17,16 @@ const SingleCocktailSchema = z.object({
 });
 
 export const CocktailListSchema = z.array(SingleCocktailSchema);
+
 export const AllCocktailsSchema = z.object({
   cocktails: z.array(SingleCocktailSchema),
   totalCount: z.number(),
 });
 
+const TotalCocktailsSchema = AllCocktailsSchema.extend({ cocktails: z.null() });
+
 export type IngredientType = z.infer<typeof IngredientSchema>;
 export type SingleCocktailType = z.infer<typeof SingleCocktailSchema>;
 export type FeaturedCocktailsType = z.infer<typeof CocktailListSchema>;
 export type AllCocktailsType = z.infer<typeof AllCocktailsSchema>;
+export type TotalCocktailsType = z.infer<typeof TotalCocktailsSchema>;

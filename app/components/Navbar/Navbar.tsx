@@ -9,7 +9,7 @@ const Navbar = () => {
       <Container className='flex justify-between'>
         <div className='flex gap-8 items-center'>
           <Link to='/'>
-            <h1 className='text-base font-bold uppercase border p-2 rounded-lg'>
+            <h1 className='text-base font-bold uppercase'>
               Barkeepers Handbook
             </h1>
           </Link>

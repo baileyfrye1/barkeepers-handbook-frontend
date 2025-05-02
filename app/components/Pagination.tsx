@@ -1,4 +1,4 @@
-import { useLocation } from '@tanstack/react-router';
+import { useLocation, useSearch } from '@tanstack/react-router';
 import {
   Pagination,
   PaginationContent,
@@ -8,45 +8,48 @@ import {
   PaginationPrevious,
   PaginationEllipsis,
 } from './ui/pagination';
+import truncatePagination from 'utils/truncatePagination';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const PaginationMenu = ({ totalCount }: { totalCount: number }) => {
-  const {
-    pathname,
-    search: { page: currentPage },
-  } = useLocation();
+  const { page: currentPage } = useSearch({ from: '/cocktails/' });
+  const { pathname } = useLocation();
 
   const numItemsPerPage = 10;
   const totalPages = Math.ceil(totalCount / numItemsPerPage);
-  const totalPagesList = Array.from(
-    {
-      length: totalPages,
-    },
-    (_, i) => i + 1,
-  );
+  const visiblePages = truncatePagination(currentPage, totalPages);
 
   return (
     <Pagination>
       <PaginationContent>
         {currentPage != 1 && (
           <PaginationItem>
-            <PaginationPrevious href={`${pathname}?page=${currentPage - 1}`} />
+            <PaginationLink href={`${pathname}?page=${currentPage - 1}`}>
+              <ChevronLeft />
+            </PaginationLink>
           </PaginationItem>
         )}
-        {totalPagesList.map((page) => {
-          return (
+
+        {visiblePages.map((page) =>
+          page === 'ellipsis' ? (
+            <PaginationEllipsis />
+          ) : (
             <PaginationItem key={page}>
               <PaginationLink
                 href={`${pathname}?page=${page}`}
-                isActive={page === currentPage ? true : false}
+                isActive={page === currentPage}
               >
                 {page}
               </PaginationLink>
             </PaginationItem>
-          );
-        })}
+          ),
+        )}
+
         {currentPage < totalPages && (
           <PaginationItem>
-            <PaginationNext href={`${pathname}?page=${currentPage + 1}`} />
+            <PaginationLink href={`${pathname}?page=${currentPage + 1}`}>
+              <ChevronRight />
+            </PaginationLink>
           </PaginationItem>
         )}
       </PaginationContent>

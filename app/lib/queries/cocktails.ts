@@ -2,6 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 import { createServerFn } from '@tanstack/react-start';
 import axiosClient from '../axiosClient';
 import {
+  TotalCocktailsType,
   type AllCocktailsType,
   type FeaturedCocktailsType,
   type SingleCocktailType,
@@ -14,7 +15,7 @@ const querySchema = z.object({
 });
 const idSchema = z.string().min(1);
 
-export const fetchAllCocktails = createServerFn({ method: 'GET' })
+const fetchAllCocktails = createServerFn({ method: 'GET' })
   .validator(querySchema)
   .handler(async ({ data: queryParams }) => {
     const params = new URLSearchParams({
@@ -24,7 +25,7 @@ export const fetchAllCocktails = createServerFn({ method: 'GET' })
 
     return (
       await axiosClient.get<AllCocktailsType>(`cocktails?${params.toString()}`)
-    ).data;
+    ).data.cocktails;
   });
 
 export const allCocktailsQueryOptions = (page: number = 1, search?: string) => {
@@ -34,7 +35,22 @@ export const allCocktailsQueryOptions = (page: number = 1, search?: string) => {
   });
 };
 
-export const fetchFeaturedCocktails = createServerFn({ method: 'GET' }).handler(
+const fetchTotalCocktails = createServerFn({ method: 'GET' }).handler(
+  async () => {
+    return (
+      await axiosClient.get<TotalCocktailsType>(`cocktails?countOnly=true`)
+    ).data.totalCount;
+  },
+);
+
+export const totalCocktailsQueryOptions = () => {
+  return queryOptions({
+    queryKey: ['cocktails'],
+    queryFn: () => fetchTotalCocktails(),
+  });
+};
+
+const fetchFeaturedCocktails = createServerFn({ method: 'GET' }).handler(
   async () => {
     return (await axiosClient.get<FeaturedCocktailsType>(`cocktails/featured`))
       .data;
@@ -48,7 +64,7 @@ export const featuredCocktailsQueryOptions = () => {
   });
 };
 
-export const fetchSingleCocktail = createServerFn({ method: 'GET' })
+const fetchSingleCocktail = createServerFn({ method: 'GET' })
   .validator(idSchema)
   .handler(async ({ data: id }) => {
     return (await axiosClient.get<SingleCocktailType>(`cocktails/${id}`)).data;

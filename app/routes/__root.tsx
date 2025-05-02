@@ -9,7 +9,7 @@ import {
 import Navbar from '../components/Navbar/Navbar';
 import { Toaster } from 'sonner';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import appCss from '@/styles/app.css?url';
 import { QueryClient } from '@tanstack/react-query';
 import { ClerkProvider } from '@clerk/tanstack-react-start';
@@ -76,6 +76,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
           <Navbar />
           <Container>{children}</Container>
           <TanStackRouterDevtools position='bottom-right' />
+          <ReactQueryDevtools position='bottom' />
           <Scripts />
           <Toaster richColors />
         </body>

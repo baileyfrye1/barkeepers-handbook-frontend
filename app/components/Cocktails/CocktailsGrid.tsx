@@ -11,9 +11,7 @@ export const AllCocktailsGrid = ({
 }: {
   queryParams: QueryParamsType;
 }) => {
-  const {
-    data: { cocktails },
-  } = useSuspenseQuery(
+  const { data: cocktails } = useSuspenseQuery(
     allCocktailsQueryOptions(queryParams.page, queryParams.search),
   );
   return (
