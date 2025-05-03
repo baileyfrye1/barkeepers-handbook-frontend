@@ -11,7 +11,7 @@ function Home() {
   return (
     <>
       <h2 className='text-2xl font-medium'>Featured Cocktails</h2>
-      <div className='grid grid-cols-3 gap-4'>
+      <div className='grid auto-fit-[3] gap-4 mt-4'>
         <Suspense fallback={<Loader />}>
           <FeaturedCocktailsGrid />
         </Suspense>

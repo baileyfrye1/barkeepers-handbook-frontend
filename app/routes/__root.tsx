@@ -74,7 +74,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         </head>
         <body>
           <Navbar />
-          <Container>{children}</Container>
+          <Container className='mt-10'>{children}</Container>
           <TanStackRouterDevtools position='bottom-right' />
           <ReactQueryDevtools position='bottom' />
           <Scripts />

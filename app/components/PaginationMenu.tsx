@@ -20,7 +20,7 @@ const PaginationMenu = ({ totalCount }: { totalCount: number }) => {
   const visiblePages = truncatePagination(currentPage, totalPages);
 
   return (
-    <Pagination>
+    <Pagination className='mt-4'>
       <PaginationContent>
         {currentPage != 1 && (
           <PaginationItem>

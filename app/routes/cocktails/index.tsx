@@ -1,6 +1,6 @@
 import { AllCocktailsGrid } from '@/components/Cocktails/CocktailsGrid';
 import Loader from '@/components/Loader';
-import PaginationMenu from '@/components/Pagination';
+import PaginationMenu from '@/components/PaginationMenu';
 import { totalCocktailsQueryOptions } from '@/lib/queries/cocktails';
 import { queryParamsSchema } from '@/schemas/QueryParamsSchema';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -26,7 +26,7 @@ function RouteComponent() {
 
   return (
     <>
-      <div className='grid grid-cols-3 gap-4'>
+      <div className='grid auto-fit-[3] gap-4'>
         <Suspense fallback={<Loader />}>
           <AllCocktailsGrid queryParams={params} />
         </Suspense>

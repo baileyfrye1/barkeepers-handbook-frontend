@@ -27,8 +27,8 @@ function RouteComponent() {
         <h1 className='text-3xl font-bold'>{cocktail.name}</h1>
         <Reviews />
       </div>
-      <div className='flex gap-8 mt-10'>
-        <div className='h-[600px] w-[500px] bg-gray-400 rounded-lg'></div>
+      <div className='flex md:flex-row flex-col gap-8 mt-10'>
+        <div className='h-[600px] w-full md:w-[500px] bg-gray-400 rounded-lg' />
         <section className='my-4'>
           <h2 className='font-bold text-2xl'>Ingredients</h2>
           <ul>

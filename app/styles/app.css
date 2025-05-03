@@ -1,6 +1,23 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+@utility auto-fit-* {
+  --grid-min-col-size: 300px;
+  --grid-gap: 1rem;
+  --grid-col-size-calc: calc(
+    (100% - var(--grid-gap) * --value([ *])) / --value([ *])
+  );
+  --grid-col-min-size-calc: min(
+    100%,
+    max(var(--grid-min-col-size), var(--grid-col-size-calc))
+  );
+
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(var(--grid-col-min-size-calc), 100%), 1fr)
+  );
+}
+
 @custom-variant dark (&:is(.dark *));
 :root {
   --background: oklch(1 0 0);
