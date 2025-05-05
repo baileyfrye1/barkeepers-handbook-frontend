@@ -4,6 +4,7 @@ import NavSearch from './NavSearch';
 import Container from '../Container';
 import { BookOpen } from 'lucide-react';
 import MobileMenu from './MobileMenu';
+import { navLinks } from 'utils/links';
 
 const Navbar = () => {
   return (
@@ -11,7 +12,7 @@ const Navbar = () => {
       <Container className='flex justify-between items-center gap-6'>
         <div>
           <Link className='flex gap-2 items-center' to='/'>
-            <BookOpen />
+            <BookOpen className='relative z-10' />
             <h1 className='text-base font-bold uppercase hidden md:block'>
               Barkeepers Handbook
             </h1>
@@ -19,8 +20,13 @@ const Navbar = () => {
         </div>
         <NavSearch />
         <div className='md:flex gap-2 items-center hidden'>
-          <Link to='/cocktails'>Cocktails</Link>
-          <Link to='/cocktails/cocktail-builder'>Cocktail Builder</Link>
+          {navLinks.map((link) => {
+            return (
+              <Link key={link.title} to={link.href}>
+                {link.title}
+              </Link>
+            );
+          })}
           <UserDropdown />
         </div>
         <MobileMenu className='md:hidden' />
