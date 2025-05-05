@@ -12,13 +12,13 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as ProfileImport } from './routes/profile'
+import { Route as CocktailBuilderImport } from './routes/cocktail-builder'
 import { Route as DashboardRouteImport } from './routes/dashboard/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as DashboardIndexImport } from './routes/dashboard/index'
 import { Route as CocktailsIndexImport } from './routes/cocktails/index'
 import { Route as DashboardManageImport } from './routes/dashboard/manage'
 import { Route as DashboardCocktailCreatorImport } from './routes/dashboard/cocktail-creator'
-import { Route as CocktailsCocktailBuilderImport } from './routes/cocktails/cocktail-builder'
 import { Route as CocktailsCocktailIdImport } from './routes/cocktails/$cocktailId'
 
 // Create/Update Routes
@@ -26,6 +26,12 @@ import { Route as CocktailsCocktailIdImport } from './routes/cocktails/$cocktail
 const ProfileRoute = ProfileImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CocktailBuilderRoute = CocktailBuilderImport.update({
+  id: '/cocktail-builder',
+  path: '/cocktail-builder',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -65,12 +71,6 @@ const DashboardCocktailCreatorRoute = DashboardCocktailCreatorImport.update({
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 
-const CocktailsCocktailBuilderRoute = CocktailsCocktailBuilderImport.update({
-  id: '/cocktails/cocktail-builder',
-  path: '/cocktails/cocktail-builder',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const CocktailsCocktailIdRoute = CocktailsCocktailIdImport.update({
   id: '/cocktails/$cocktailId',
   path: '/cocktails/$cocktailId',
@@ -95,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRoute
     }
+    '/cocktail-builder': {
+      id: '/cocktail-builder'
+      path: '/cocktail-builder'
+      fullPath: '/cocktail-builder'
+      preLoaderRoute: typeof CocktailBuilderImport
+      parentRoute: typeof rootRoute
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
@@ -107,13 +114,6 @@ declare module '@tanstack/react-router' {
       path: '/cocktails/$cocktailId'
       fullPath: '/cocktails/$cocktailId'
       preLoaderRoute: typeof CocktailsCocktailIdImport
-      parentRoute: typeof rootRoute
-    }
-    '/cocktails/cocktail-builder': {
-      id: '/cocktails/cocktail-builder'
-      path: '/cocktails/cocktail-builder'
-      fullPath: '/cocktails/cocktail-builder'
-      preLoaderRoute: typeof CocktailsCocktailBuilderImport
       parentRoute: typeof rootRoute
     }
     '/dashboard/cocktail-creator': {
@@ -168,9 +168,9 @@ const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/cocktail-builder': typeof CocktailBuilderRoute
   '/profile': typeof ProfileRoute
   '/cocktails/$cocktailId': typeof CocktailsCocktailIdRoute
-  '/cocktails/cocktail-builder': typeof CocktailsCocktailBuilderRoute
   '/dashboard/cocktail-creator': typeof DashboardCocktailCreatorRoute
   '/dashboard/manage': typeof DashboardManageRoute
   '/cocktails': typeof CocktailsIndexRoute
@@ -179,9 +179,9 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cocktail-builder': typeof CocktailBuilderRoute
   '/profile': typeof ProfileRoute
   '/cocktails/$cocktailId': typeof CocktailsCocktailIdRoute
-  '/cocktails/cocktail-builder': typeof CocktailsCocktailBuilderRoute
   '/dashboard/cocktail-creator': typeof DashboardCocktailCreatorRoute
   '/dashboard/manage': typeof DashboardManageRoute
   '/cocktails': typeof CocktailsIndexRoute
@@ -192,9 +192,9 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/cocktail-builder': typeof CocktailBuilderRoute
   '/profile': typeof ProfileRoute
   '/cocktails/$cocktailId': typeof CocktailsCocktailIdRoute
-  '/cocktails/cocktail-builder': typeof CocktailsCocktailBuilderRoute
   '/dashboard/cocktail-creator': typeof DashboardCocktailCreatorRoute
   '/dashboard/manage': typeof DashboardManageRoute
   '/cocktails/': typeof CocktailsIndexRoute
@@ -206,9 +206,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/cocktail-builder'
     | '/profile'
     | '/cocktails/$cocktailId'
-    | '/cocktails/cocktail-builder'
     | '/dashboard/cocktail-creator'
     | '/dashboard/manage'
     | '/cocktails'
@@ -216,9 +216,9 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/cocktail-builder'
     | '/profile'
     | '/cocktails/$cocktailId'
-    | '/cocktails/cocktail-builder'
     | '/dashboard/cocktail-creator'
     | '/dashboard/manage'
     | '/cocktails'
@@ -227,9 +227,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/dashboard'
+    | '/cocktail-builder'
     | '/profile'
     | '/cocktails/$cocktailId'
-    | '/cocktails/cocktail-builder'
     | '/dashboard/cocktail-creator'
     | '/dashboard/manage'
     | '/cocktails/'
@@ -240,18 +240,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
+  CocktailBuilderRoute: typeof CocktailBuilderRoute
   ProfileRoute: typeof ProfileRoute
   CocktailsCocktailIdRoute: typeof CocktailsCocktailIdRoute
-  CocktailsCocktailBuilderRoute: typeof CocktailsCocktailBuilderRoute
   CocktailsIndexRoute: typeof CocktailsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
+  CocktailBuilderRoute: CocktailBuilderRoute,
   ProfileRoute: ProfileRoute,
   CocktailsCocktailIdRoute: CocktailsCocktailIdRoute,
-  CocktailsCocktailBuilderRoute: CocktailsCocktailBuilderRoute,
   CocktailsIndexRoute: CocktailsIndexRoute,
 }
 
@@ -267,9 +267,9 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/dashboard",
+        "/cocktail-builder",
         "/profile",
         "/cocktails/$cocktailId",
-        "/cocktails/cocktail-builder",
         "/cocktails/"
       ]
     },
@@ -284,14 +284,14 @@ export const routeTree = rootRoute
         "/dashboard/"
       ]
     },
+    "/cocktail-builder": {
+      "filePath": "cocktail-builder.tsx"
+    },
     "/profile": {
       "filePath": "profile.tsx"
     },
     "/cocktails/$cocktailId": {
       "filePath": "cocktails/$cocktailId.tsx"
-    },
-    "/cocktails/cocktail-builder": {
-      "filePath": "cocktails/cocktail-builder.tsx"
     },
     "/dashboard/cocktail-creator": {
       "filePath": "dashboard/cocktail-creator.tsx",

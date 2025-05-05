@@ -47,10 +47,10 @@ const UserDropdown = () => {
         </SignedIn>
         <SignedOut>
           <DropdownMenuItem>
-            <SignInButton>Sign In</SignInButton>
+            <SignInButton>Log In</SignInButton>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <SignUpButton>Register</SignUpButton>
+            <SignUpButton>Sign Up</SignUpButton>
           </DropdownMenuItem>
         </SignedOut>
       </DropdownMenuContent>
