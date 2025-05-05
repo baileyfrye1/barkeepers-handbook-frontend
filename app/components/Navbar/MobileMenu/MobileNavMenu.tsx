@@ -12,7 +12,11 @@ import {
 import Container from '../../Container';
 import { navLinks } from 'utils/links';
 import { motion } from 'framer-motion';
-import { linkContainerVars, linkVars, navMenuVars } from './MobileVars';
+import {
+  linkContainerVars,
+  linkVars,
+  navMenuVars,
+} from './MotionVars/MenuVars';
 
 type MenuPropTypes = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -34,7 +38,7 @@ const MobileNavMenu = ({ setIsOpen, toggleBodyOverflow }: MenuPropTypes) => {
       initial='initial'
       animate='animate'
       exit='exit'
-      className='fixed w-full h-full top-0 left-0 bg-red-500 origin-top-right flex flex-col justify-center overflow-hidden'
+      className='absolute w-full h-full top-0 left-0 bg-[#367E18] origin-top-right flex flex-col justify-center overflow-hidden'
     >
       <Container className='flex flex-col justify-between items-start w-full h-full'>
         <motion.div

@@ -13,12 +13,6 @@ export const expandingMenuVars = {
   },
 };
 
-export const hamburgerVars = {
-  initial: {},
-  animate: {},
-  exit: {},
-};
-
 export const navMenuVars = {
   initial: {
     opacity: 0,
