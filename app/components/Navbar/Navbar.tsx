@@ -3,8 +3,8 @@ import UserDropdown from './UserDropdown';
 import NavSearch from './NavSearch';
 import Container from '../Container';
 import { BookOpen } from 'lucide-react';
-import MobileMenu from './MobileMenu';
 import { navLinks } from 'utils/links';
+import HamburgerMenu from './MobileMenu/HamburgerMenu';
 
 const Navbar = () => {
   return (
@@ -29,7 +29,7 @@ const Navbar = () => {
           })}
           <UserDropdown />
         </div>
-        <MobileMenu className='md:hidden' />
+        <HamburgerMenu className='md:hidden' />
       </Container>
     </nav>
   );
