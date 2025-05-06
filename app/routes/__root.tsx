@@ -17,6 +17,7 @@ import { fetchClerkAuth } from '@/lib/actions';
 import { DefaultCatchBoundary } from '@/components/DefaultCatchBoundary';
 import { NotFound } from '@/components/NotFound';
 import Container from '@/components/Container';
+import Footer from '@/components/Footer';
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
@@ -74,7 +75,8 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         </head>
         <body>
           <Navbar />
-          <Container className='mt-10'>{children}</Container>
+          <Container className='py-10'>{children}</Container>
+          <Footer />
           <TanStackRouterDevtools position='bottom-right' />
           <ReactQueryDevtools position='bottom' />
           <Scripts />
