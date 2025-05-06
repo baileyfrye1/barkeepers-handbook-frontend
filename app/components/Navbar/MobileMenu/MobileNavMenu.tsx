@@ -38,7 +38,7 @@ const MobileNavMenu = ({ setIsOpen, toggleBodyOverflow }: MenuPropTypes) => {
       initial='initial'
       animate='animate'
       exit='exit'
-      className='absolute w-full h-full top-0 left-0 bg-[#367E18] origin-top-right flex flex-col justify-center overflow-hidden'
+      className='absolute w-full h-full top-0 left-0 origin-top-right flex flex-col justify-center overflow-hidden'
     >
       <Container className='flex flex-col justify-between items-start w-full h-full'>
         <motion.div

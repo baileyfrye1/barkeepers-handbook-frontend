@@ -19,7 +19,7 @@ const Navbar = () => {
           </Link>
         </div>
         <NavSearch />
-        <div className='md:flex gap-2 items-center hidden'>
+        <div className='md:flex gap-3 items-center hidden'>
           {navLinks.map((link) => {
             return (
               <Link key={link.title} to={link.href}>

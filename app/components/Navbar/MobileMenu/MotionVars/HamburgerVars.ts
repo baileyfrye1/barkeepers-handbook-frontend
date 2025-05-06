@@ -4,14 +4,20 @@ export const topLineVars = {
     y: '-50%',
     rotate: 0,
     transition: {
-      duration: 0.5,
+      duration: 0.3,
+      top: {
+        delay: 0.5,
+      },
     },
   },
   open: {
     top: '50%',
-    rotate: '495deg',
+    rotate: '45deg',
     transition: {
-      duration: 0.5,
+      duration: 0.3,
+      rotate: {
+        delay: 0.5,
+      },
     },
   },
 };
@@ -19,15 +25,14 @@ export const topLineVars = {
 export const middleLineVars = {
   closed: {
     opacity: 1,
-    rotate: 0,
     transition: {
-      duration: 0.5,
+      duration: 0.3,
+      delay: 0.5,
     },
   },
   open: {
     width: 0,
     opacity: 0,
-    rotate: '360deg',
     transition: {
       duration: 0.1,
     },
@@ -39,15 +44,21 @@ export const bottomLineVars = {
     bottom: '30%',
     rotate: 0,
     transition: {
-      duration: 0.5,
+      duration: 0.3,
+      bottom: {
+        delay: 0.5,
+      },
     },
   },
   open: {
     bottom: '50%',
-    width: '100%',
-    rotate: '585deg',
+    width: '1.5rem',
+    rotate: '-45deg',
     transition: {
-      duration: 0.5,
+      duration: 0.3,
+      rotate: {
+        delay: 0.5,
+      },
     },
   },
 };
