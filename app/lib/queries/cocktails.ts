@@ -1,13 +1,13 @@
-import { queryOptions } from '@tanstack/react-query';
-import { createServerFn } from '@tanstack/react-start';
-import axiosClient from '../axiosClient';
+import { queryOptions } from "@tanstack/react-query";
+import { createServerFn } from "@tanstack/react-start";
+import axiosClient from "../axiosClient";
 import {
   TotalCocktailsType,
   type AllCocktailsType,
   type FeaturedCocktailsType,
   type SingleCocktailType,
-} from '@/schemas/CocktailSchemas';
-import { z } from 'zod';
+} from "@/schemas/CocktailSchemas";
+import { z } from "zod";
 
 const querySchema = z.object({
   search: z.string().optional(),
@@ -15,7 +15,7 @@ const querySchema = z.object({
 });
 const idSchema = z.string().min(1);
 
-const fetchAllCocktails = createServerFn({ method: 'GET' })
+const fetchAllCocktails = createServerFn({ method: "GET" })
   .validator(querySchema)
   .handler(async ({ data: queryParams }) => {
     const params = new URLSearchParams({
@@ -30,12 +30,12 @@ const fetchAllCocktails = createServerFn({ method: 'GET' })
 
 export const allCocktailsQueryOptions = (page: number = 1, search?: string) => {
   return queryOptions({
-    queryKey: ['cocktails', page, search],
+    queryKey: ["cocktails", page, search],
     queryFn: () => fetchAllCocktails({ data: { page, search } }),
   });
 };
 
-const fetchTotalCocktails = createServerFn({ method: 'GET' }).handler(
+const fetchTotalCocktails = createServerFn({ method: "GET" }).handler(
   async () => {
     return (
       await axiosClient.get<TotalCocktailsType>(`cocktails?countOnly=true`)
@@ -45,12 +45,12 @@ const fetchTotalCocktails = createServerFn({ method: 'GET' }).handler(
 
 export const totalCocktailsQueryOptions = () => {
   return queryOptions({
-    queryKey: ['cocktails'],
+    queryKey: ["cocktails"],
     queryFn: () => fetchTotalCocktails(),
   });
 };
 
-const fetchFeaturedCocktails = createServerFn({ method: 'GET' }).handler(
+const fetchFeaturedCocktails = createServerFn({ method: "GET" }).handler(
   async () => {
     return (await axiosClient.get<FeaturedCocktailsType>(`cocktails/featured`))
       .data;
@@ -59,12 +59,12 @@ const fetchFeaturedCocktails = createServerFn({ method: 'GET' }).handler(
 
 export const featuredCocktailsQueryOptions = () => {
   return queryOptions({
-    queryKey: ['cocktails', 'featured'],
+    queryKey: ["cocktails", "featured"],
     queryFn: () => fetchFeaturedCocktails(),
   });
 };
 
-const fetchSingleCocktail = createServerFn({ method: 'GET' })
+const fetchSingleCocktail = createServerFn({ method: "GET" })
   .validator(idSchema)
   .handler(async ({ data: id }) => {
     return (await axiosClient.get<SingleCocktailType>(`cocktails/${id}`)).data;
@@ -72,7 +72,7 @@ const fetchSingleCocktail = createServerFn({ method: 'GET' })
 
 export const singleCocktailQueryOptions = (cocktailId: string) => {
   return queryOptions({
-    queryKey: ['cocktail', cocktailId],
+    queryKey: ["cocktail", cocktailId],
     queryFn: () => fetchSingleCocktail({ data: cocktailId }),
   });
 };

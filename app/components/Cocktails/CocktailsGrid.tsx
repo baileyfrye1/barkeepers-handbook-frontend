@@ -1,10 +1,10 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   allCocktailsQueryOptions,
   featuredCocktailsQueryOptions,
-} from '@/lib/queries/cocktails';
-import CocktailCard from './CocktailCard';
-import { QueryParamsType } from '@/schemas/QueryParamsSchema';
+} from "@/lib/queries/cocktails";
+import CocktailCard from "./CocktailCard";
+import { QueryParamsType } from "@/schemas/QueryParamsSchema";
 
 export const AllCocktailsGrid = ({
   queryParams,
@@ -14,6 +14,7 @@ export const AllCocktailsGrid = ({
   const { data: cocktails } = useSuspenseQuery(
     allCocktailsQueryOptions(queryParams.page, queryParams.search),
   );
+
   return (
     <>
       {cocktails.map((cocktail) => {

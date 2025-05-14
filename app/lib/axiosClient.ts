@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: 'https://barkeepers-handbook-api.fly.dev/api/v1/',
+  baseURL: "https://api.barkeepershandbook.com/api/v1/",
   withCredentials: true,
 });
 
