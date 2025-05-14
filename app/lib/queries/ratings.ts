@@ -1,7 +1,6 @@
 import { getAuth } from "@clerk/tanstack-react-start/server";
 import axiosClient from "../axiosClient";
 import { createServerFn } from "@tanstack/react-start";
-import { toast } from "sonner";
 import { z } from "zod";
 import { getWebRequest } from "@tanstack/react-start/server";
 
@@ -24,19 +23,11 @@ export const submitRating = createServerFn({ method: "POST" })
       },
     };
 
-    try {
-      await axiosClient.post(
-        `ratings/${cocktailId}`,
-        {
-          rating,
-        },
-        options,
-      );
-
-      toast.success("Successfully submitted rating");
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      }
-    }
+    await axiosClient.post(
+      `ratings/${cocktailId}`,
+      {
+        rating,
+      },
+      options,
+    );
   });
