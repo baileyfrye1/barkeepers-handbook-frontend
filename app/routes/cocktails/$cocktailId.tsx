@@ -1,7 +1,6 @@
 import Breadcrumbs from "@/components/Breadcrumbs";
 import Ingredient from "@/components/Ingredient";
 import FullRatingDetails from "@/components/Ratings/FullRatingDetails";
-import InteractiveStars from "@/components/Ratings/InteractiveStars";
 import axiosClient from "@/lib/axiosClient";
 import { SingleCocktailType } from "@/schemas/CocktailSchemas";
 import { createFileRoute } from "@tanstack/react-router";

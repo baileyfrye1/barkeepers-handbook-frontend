@@ -1,5 +1,6 @@
 import { submitRating } from "@/lib/queries/ratings";
 import { CocktailRatingType } from "@/schemas/CocktailSchemas";
+import { useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { FaRegStar, FaRegStarHalfStroke, FaStar } from "react-icons/fa6";
 
@@ -13,6 +14,7 @@ const InteractiveStars = ({
   const starArray: number[] = Array.from({ length: 5 });
   const [hovered, setHovered] = useState<number | null>();
   const rounded = Math.round(ratingsData.averageRating * 2) / 2;
+  const router = useRouter();
 
   return (
     <section className="flex flex-col">
@@ -30,9 +32,10 @@ const InteractiveStars = ({
                 className="cursor-pointer"
                 onMouseOver={() => setHovered(i + 1)}
                 onMouseOut={() => setHovered(null)}
-                onClick={() =>
-                  submitRating({ data: { cocktailId, rating: i + 1 } })
-                }
+                onClick={async () => {
+                  submitRating({ data: { cocktailId, rating: i + 1 } });
+                  router.invalidate();
+                }}
               />
             );
           } else {
