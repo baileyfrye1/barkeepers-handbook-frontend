@@ -17,6 +17,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as DashboardIndexImport } from './routes/dashboard/index'
 import { Route as CocktailsIndexImport } from './routes/cocktails/index'
+import { Route as DashboardMyActivityImport } from './routes/dashboard/my-activity'
 import { Route as DashboardManageImport } from './routes/dashboard/manage'
 import { Route as DashboardCocktailCreatorImport } from './routes/dashboard/cocktail-creator'
 import { Route as CocktailsCocktailIdImport } from './routes/cocktails/$cocktailId'
@@ -57,6 +58,12 @@ const CocktailsIndexRoute = CocktailsIndexImport.update({
   id: '/cocktails/',
   path: '/cocktails/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardMyActivityRoute = DashboardMyActivityImport.update({
+  id: '/my-activity',
+  path: '/my-activity',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 
 const DashboardManageRoute = DashboardManageImport.update({
@@ -130,6 +137,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardManageImport
       parentRoute: typeof DashboardRouteImport
     }
+    '/dashboard/my-activity': {
+      id: '/dashboard/my-activity'
+      path: '/my-activity'
+      fullPath: '/dashboard/my-activity'
+      preLoaderRoute: typeof DashboardMyActivityImport
+      parentRoute: typeof DashboardRouteImport
+    }
     '/cocktails/': {
       id: '/cocktails/'
       path: '/cocktails'
@@ -152,12 +166,14 @@ declare module '@tanstack/react-router' {
 interface DashboardRouteRouteChildren {
   DashboardCocktailCreatorRoute: typeof DashboardCocktailCreatorRoute
   DashboardManageRoute: typeof DashboardManageRoute
+  DashboardMyActivityRoute: typeof DashboardMyActivityRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardCocktailCreatorRoute: DashboardCocktailCreatorRoute,
   DashboardManageRoute: DashboardManageRoute,
+  DashboardMyActivityRoute: DashboardMyActivityRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
 
@@ -173,6 +189,7 @@ export interface FileRoutesByFullPath {
   '/cocktails/$cocktailId': typeof CocktailsCocktailIdRoute
   '/dashboard/cocktail-creator': typeof DashboardCocktailCreatorRoute
   '/dashboard/manage': typeof DashboardManageRoute
+  '/dashboard/my-activity': typeof DashboardMyActivityRoute
   '/cocktails': typeof CocktailsIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
@@ -184,6 +201,7 @@ export interface FileRoutesByTo {
   '/cocktails/$cocktailId': typeof CocktailsCocktailIdRoute
   '/dashboard/cocktail-creator': typeof DashboardCocktailCreatorRoute
   '/dashboard/manage': typeof DashboardManageRoute
+  '/dashboard/my-activity': typeof DashboardMyActivityRoute
   '/cocktails': typeof CocktailsIndexRoute
   '/dashboard': typeof DashboardIndexRoute
 }
@@ -197,6 +215,7 @@ export interface FileRoutesById {
   '/cocktails/$cocktailId': typeof CocktailsCocktailIdRoute
   '/dashboard/cocktail-creator': typeof DashboardCocktailCreatorRoute
   '/dashboard/manage': typeof DashboardManageRoute
+  '/dashboard/my-activity': typeof DashboardMyActivityRoute
   '/cocktails/': typeof CocktailsIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
@@ -211,6 +230,7 @@ export interface FileRouteTypes {
     | '/cocktails/$cocktailId'
     | '/dashboard/cocktail-creator'
     | '/dashboard/manage'
+    | '/dashboard/my-activity'
     | '/cocktails'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
@@ -221,6 +241,7 @@ export interface FileRouteTypes {
     | '/cocktails/$cocktailId'
     | '/dashboard/cocktail-creator'
     | '/dashboard/manage'
+    | '/dashboard/my-activity'
     | '/cocktails'
     | '/dashboard'
   id:
@@ -232,6 +253,7 @@ export interface FileRouteTypes {
     | '/cocktails/$cocktailId'
     | '/dashboard/cocktail-creator'
     | '/dashboard/manage'
+    | '/dashboard/my-activity'
     | '/cocktails/'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
@@ -281,6 +303,7 @@ export const routeTree = rootRoute
       "children": [
         "/dashboard/cocktail-creator",
         "/dashboard/manage",
+        "/dashboard/my-activity",
         "/dashboard/"
       ]
     },
@@ -299,6 +322,10 @@ export const routeTree = rootRoute
     },
     "/dashboard/manage": {
       "filePath": "dashboard/manage.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/my-activity": {
+      "filePath": "dashboard/my-activity.tsx",
       "parent": "/dashboard"
     },
     "/cocktails/": {

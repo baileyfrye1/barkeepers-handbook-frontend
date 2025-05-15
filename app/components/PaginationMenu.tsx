@@ -1,18 +1,16 @@
-import { useLocation, useSearch } from '@tanstack/react-router';
+import { useLocation, useSearch } from "@tanstack/react-router";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
   PaginationEllipsis,
-} from './ui/pagination';
-import truncatePagination from 'utils/truncatePagination';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+} from "./ui/pagination";
+import truncatePagination from "utils/truncatePagination";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const PaginationMenu = ({ totalCount }: { totalCount: number }) => {
-  const { page: currentPage } = useSearch({ from: '/cocktails/' });
+  const { page: currentPage } = useSearch({ from: "/cocktails/" });
   const { pathname } = useLocation();
 
   const numItemsPerPage = 10;
@@ -20,7 +18,7 @@ const PaginationMenu = ({ totalCount }: { totalCount: number }) => {
   const visiblePages = truncatePagination(currentPage, totalPages);
 
   return (
-    <Pagination className='mt-4'>
+    <Pagination className="mt-4">
       <PaginationContent>
         {currentPage != 1 && (
           <PaginationItem>
@@ -31,7 +29,7 @@ const PaginationMenu = ({ totalCount }: { totalCount: number }) => {
         )}
 
         {visiblePages.map((page) =>
-          page === 'ellipsis' ? (
+          page === "ellipsis" ? (
             <PaginationEllipsis />
           ) : (
             <PaginationItem key={page}>
