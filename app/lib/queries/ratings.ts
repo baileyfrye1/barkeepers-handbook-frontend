@@ -17,6 +17,10 @@ export const submitRating = createServerFn({ method: "POST" })
 
     const token = await getToken({ template: "backend_api" });
 
+    if (!token) {
+      throw new Error("Error creating authentication token");
+    }
+
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,

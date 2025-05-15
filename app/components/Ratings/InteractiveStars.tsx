@@ -23,6 +23,11 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Button } from "../ui/button";
+import {
+  SignInButton,
+  SignUpButton,
+  useUser,
+} from "@clerk/tanstack-react-start";
 
 const InteractiveStars = ({
   ratingsData,
@@ -39,10 +44,12 @@ const InteractiveStars = ({
     initializeWithValue: false,
     defaultValue: true,
   });
+  const { isSignedIn } = useUser();
 
   const starArray: number[] = Array.from({ length: 5 });
   const rounded = Math.round(ratingsData.averageRating * 2) / 2;
 
+  // TODO: Add correct error handling. Right now the success message always happens even if there is an error submitting
   const handleSubmit = async () => {
     try {
       submitRating({ data: { cocktailId, rating: ratingValue } });
@@ -152,12 +159,34 @@ const InteractiveStars = ({
               })}
             </span>
             <DialogFooter>
-              <Button
-                className="cursor-pointer font-bold"
-                onClick={handleSubmit}
-              >
-                Submit
-              </Button>
+              {!isSignedIn ? (
+                <>
+                  <SignInButton mode="modal">
+                    <Button
+                      className="font-bold cursor-pointer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Log In
+                    </Button>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <Button
+                      className="font-bold cursor-pointer"
+                      variant="outline"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Sign Up
+                    </Button>
+                  </SignUpButton>
+                </>
+              ) : (
+                <Button
+                  className="cursor-pointer font-bold"
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </Button>
+              )}
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -235,18 +264,42 @@ const InteractiveStars = ({
             })}
           </span>
           <DrawerFooter>
-            <Button className="font-bold" onClick={handleSubmit}>
-              Submit
-            </Button>
-            <DrawerClose asChild>
-              <Button
-                className="font-bold"
-                variant="outline"
-                onClick={() => setIsOpen(false)}
-              >
-                Close
-              </Button>
-            </DrawerClose>
+            {!isSignedIn ? (
+              <>
+                <SignInButton mode="modal">
+                  <Button
+                    className="font-bold"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Log In
+                  </Button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <Button
+                    className="font-bold"
+                    variant="outline"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Sign Up
+                  </Button>
+                </SignUpButton>
+              </>
+            ) : (
+              <>
+                <Button className="font-bold" onClick={handleSubmit}>
+                  Submit
+                </Button>
+                <DrawerClose asChild>
+                  <Button
+                    className="font-bold"
+                    variant="outline"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Close
+                  </Button>
+                </DrawerClose>
+              </>
+            )}
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
