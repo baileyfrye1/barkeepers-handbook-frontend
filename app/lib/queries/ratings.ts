@@ -12,7 +12,7 @@ const submitRatingSchema = z.object({
   rating: z.number(),
 });
 
-const idSchema = z.number();
+const idSchema = z.string();
 
 // CREATE AUTH HEADER HELPER FUNCTION
 const createAuthHeader = async () => {
