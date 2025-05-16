@@ -9,8 +9,8 @@ export const Route = createFileRoute("/dashboard")({
 
 function RouteComponent() {
   return (
-    <div className="grid grid-cols-3">
-      <aside className="col-span-1 flex flex-col">
+    <div className="grid md:grid-cols-3">
+      <aside className="col-span-1 hidden md:flex flex-col">
         <Link to="/dashboard/cocktail-creator">Create Cocktail</Link>
         <Link to="/dashboard/manage">My Cocktails</Link>
         <Link to="/dashboard/my-activity">My Activity</Link>

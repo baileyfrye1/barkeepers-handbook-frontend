@@ -6,41 +6,16 @@ import { getWebRequest } from "@tanstack/react-start/server";
 import { queryOptions } from "@tanstack/react-query";
 import { AllUserRatingsType } from "@/schemas/RatingSchemas";
 
+// SCHEMAS
 const submitRatingSchema = z.object({
   cocktailId: z.string(),
   rating: z.number(),
 });
 
-const userIdSchema = z.string();
+const idSchema = z.string();
 
-export const submitRating = createServerFn({ method: "POST" })
-  .validator(submitRatingSchema)
-  .handler(async ({ data }) => {
-    const { cocktailId, rating } = data;
-    const { getToken } = await getAuth(getWebRequest()!);
-
-    const token = await getToken({ template: "backend_api" });
-
-    if (!token) {
-      throw new Error("Error creating authentication token");
-    }
-
-    const options = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    await axiosClient.post(
-      `ratings/${cocktailId}`,
-      {
-        rating,
-      },
-      options,
-    );
-  });
-
-const fetchUserRatings = createServerFn({ method: "GET" }).handler(async () => {
+// CREATE AUTH HEADER HELPER FUNCTION
+const createAuthHeader = async () => {
   const { getToken } = await getAuth(getWebRequest()!);
 
   const token = await getToken({ template: "backend_api" });
@@ -55,7 +30,31 @@ const fetchUserRatings = createServerFn({ method: "GET" }).handler(async () => {
     },
   };
 
-  return (await axiosClient.get<AllUserRatingsType>("ratings", options)).data;
+  return options;
+};
+
+// SERVER FUNCTIONS AND QUERY OPTIONS
+export const submitRating = createServerFn({ method: "POST" })
+  .validator(submitRatingSchema)
+  .handler(async ({ data }) => {
+    const { cocktailId, rating } = data;
+
+    const authHeader = await createAuthHeader();
+
+    await axiosClient.post(
+      `ratings/${cocktailId}`,
+      {
+        rating,
+      },
+      authHeader,
+    );
+  });
+
+const fetchUserRatings = createServerFn({ method: "GET" }).handler(async () => {
+  const authHeader = await createAuthHeader();
+
+  return (await axiosClient.get<AllUserRatingsType>("ratings", authHeader))
+    .data;
 });
 
 export const userRatingsQueryOptions = () => {
@@ -64,3 +63,11 @@ export const userRatingsQueryOptions = () => {
     queryFn: () => fetchUserRatings(),
   });
 };
+
+export const deleteUserRating = createServerFn()
+  .validator(idSchema)
+  .handler(async ({ data: id }) => {
+    const authHeader = await createAuthHeader();
+
+    await axiosClient.delete(`ratings/${id}`, authHeader);
+  });

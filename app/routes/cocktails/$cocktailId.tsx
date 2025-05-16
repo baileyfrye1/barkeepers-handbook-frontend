@@ -23,7 +23,7 @@ function RouteComponent() {
   const { cocktailId } = Route.useParams();
 
   return (
-    <section className="mt-10">
+    <section>
       <Breadcrumbs cocktailName={cocktail.name} />
       <div className="mt-10">
         <h1 className="text-3xl font-bold">{cocktail.name}</h1>
@@ -42,7 +42,7 @@ function RouteComponent() {
           // TODO: Remove this line once all cocktails have images
           <div className="h-[600px] w-full md:w-[500px] bg-gray-400 rounded-lg" />
         )}
-        <section className="my-4">
+        <section className="md:my-4">
           <h2 className="font-bold text-2xl">Ingredients</h2>
           <ul>
             {cocktail.cocktailIngredients.map((ingredient) => {
@@ -55,7 +55,7 @@ function RouteComponent() {
             })}
           </ul>
 
-          <h2 className="font-bold text-2xl">Steps</h2>
+          <h2 className="font-bold text-2xl mt-4">Steps</h2>
           <ul></ul>
         </section>
       </div>

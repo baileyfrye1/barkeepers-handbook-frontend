@@ -7,7 +7,7 @@ const CocktailCard = ({ cocktail }: { cocktail: SingleCocktailType }) => {
   return (
     <article key={cocktail.id}>
       <Link to={`/cocktails/$cocktailId`} params={{ cocktailId: cocktail.id }}>
-        <Card className="gap-2 px-4 py-4">
+        <Card className="gap-2 p-4">
           <img className="rounded-lg" src={cocktail.imageUrl} />
           <CardTitle>{cocktail.name}</CardTitle>
           <SimpleRatingDetails ratingsData={cocktail.ratingsData} />
