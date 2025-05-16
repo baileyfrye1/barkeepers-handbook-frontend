@@ -1,5 +1,10 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardTitle } from "@/components/ui/card";
 import { authStateFn } from "@/lib/actions";
-import { createFileRoute } from "@tanstack/react-router";
+import { userRatingsQueryOptions } from "@/lib/queries/ratings";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute, redirect, useMatches } from "@tanstack/react-router";
+import { FaStar } from "react-icons/fa6";
 
 export const Route = createFileRoute("/dashboard/my-activity")({
   beforeLoad: async () => await authStateFn(),
@@ -7,5 +12,30 @@ export const Route = createFileRoute("/dashboard/my-activity")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/dashboard/my-activity"!</div>;
+  const matches = useMatches();
+  const userId = matches.map((match) => match.context.userId);
+
+  if (!userId) {
+    redirect({ to: "/" });
+  }
+
+  const { data } = useSuspenseQuery(userRatingsQueryOptions());
+
+  return (
+    <section>
+      <h2 className="font-bold text-2xl">Ratings</h2>
+      {data.map((rating) => {
+        return (
+          <Card key={rating.cocktail.id}>
+            <img className="rounded-lg" src={rating.cocktail.imageUrl} />
+            <CardTitle>{rating.cocktail.name}</CardTitle>
+            <FaStar />
+            <span>{rating.ratingValue}</span>
+            <Button>Edit</Button>
+            <Button variant="destructive">Delete</Button>
+          </Card>
+        );
+      })}
+    </section>
+  );
 }

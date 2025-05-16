@@ -13,6 +13,7 @@ function RouteComponent() {
       <aside className="col-span-1 flex flex-col">
         <Link to="/dashboard/cocktail-creator">Create Cocktail</Link>
         <Link to="/dashboard/manage">My Cocktails</Link>
+        <Link to="/dashboard/my-activity">My Activity</Link>
       </aside>
       <section className="col-span-2">
         <Outlet />
