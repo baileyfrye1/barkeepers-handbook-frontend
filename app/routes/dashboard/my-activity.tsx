@@ -24,13 +24,14 @@ function RouteComponent() {
   return (
     <section>
       <h2 className="font-bold text-2xl">Ratings</h2>
-      {data.map((rating) => {
+      {data.map((userRating) => {
+        const { rating, cocktail } = userRating;
         return (
-          <Card key={rating.cocktail.id}>
-            <img className="rounded-lg" src={rating.cocktail.imageUrl} />
-            <CardTitle>{rating.cocktail.name}</CardTitle>
+          <Card key={cocktail.id}>
+            <img className="rounded-lg" src={cocktail.image} />
+            <CardTitle>{cocktail.name}</CardTitle>
             <FaStar />
-            <span>{rating.ratingValue}</span>
+            <span>{rating}</span>
             <Button>Edit</Button>
             <Button variant="destructive">Delete</Button>
           </Card>

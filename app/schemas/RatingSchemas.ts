@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 const SingleUserRatingSchema = z.object({
-  ratingValue: z.number(),
+  rating: z.number(),
   cocktail: z.object({
     id: z.string(),
     name: z.string(),
-    imageUrl: z.string(),
+    image: z.string(),
   }),
 });
 
