@@ -8,11 +8,11 @@ import { AllUserRatingsType } from "@/schemas/RatingSchemas";
 
 // SCHEMAS
 const submitRatingSchema = z.object({
-  cocktailId: z.string(),
+  cocktailId: z.number(),
   rating: z.number(),
 });
 
-const idSchema = z.string();
+const idSchema = z.number();
 
 // CREATE AUTH HEADER HELPER FUNCTION
 const createAuthHeader = async () => {

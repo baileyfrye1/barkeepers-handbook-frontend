@@ -13,7 +13,7 @@ const CocktailRatingsSchema = z.object({
 });
 
 const SingleCocktailSchema = z.object({
-  id: z.string(),
+  id: z.number(),
   name: z.string(),
   featured: z.boolean(),
   cocktailIngredients: z.array(IngredientSchema),
