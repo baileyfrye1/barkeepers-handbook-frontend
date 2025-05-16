@@ -41,7 +41,21 @@ export const submitRating = createServerFn({ method: "POST" })
   });
 
 const fetchUserRatings = createServerFn({ method: "GET" }).handler(async () => {
-  return (await axiosClient.get<AllUserRatingsType>("ratings")).data;
+  const { getToken } = await getAuth(getWebRequest()!);
+
+  const token = await getToken({ template: "backend_api" });
+
+  if (!token) {
+    throw new Error("Error creating authentication token");
+  }
+
+  const options = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return (await axiosClient.get<AllUserRatingsType>("ratings", options)).data;
 });
 
 export const userRatingsQueryOptions = () => {
