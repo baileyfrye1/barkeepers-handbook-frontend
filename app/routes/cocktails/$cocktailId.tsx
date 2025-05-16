@@ -9,7 +9,7 @@ export const Route = createFileRoute("/cocktails/$cocktailId")({
   component: RouteComponent,
   loader: async ({ params }) => {
     const response = await axiosClient<SingleCocktailType>(
-      `cocktails/${params.cocktailId}`,
+      `cocktails/${parseInt(params.cocktailId)}`,
     );
     return response.data;
   },
@@ -29,7 +29,7 @@ function RouteComponent() {
         <h1 className="text-3xl font-bold">{cocktail.name}</h1>
         <FullRatingDetails
           ratingsData={cocktail.ratingsData}
-          cocktailId={cocktailId}
+          cocktailId={parseInt(cocktailId)}
         />
       </div>
       <div className="flex md:flex-row flex-col gap-8 mt-10">
