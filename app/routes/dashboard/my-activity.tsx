@@ -41,7 +41,7 @@ function RouteComponent() {
       <Separator className="my-4" />
       <div className="grid auto-fit-[2] gap-4">
         {data.map((userRating) => {
-          const { rating, cocktail } = userRating;
+          const { rating, cocktail, id } = userRating;
           return (
             <Card key={cocktail.id} className="p-4 gap-2">
               <img className="rounded-lg" src={cocktail.image} />
@@ -53,7 +53,7 @@ function RouteComponent() {
               <div className="flex flex-col gap-2">
                 <Button className="cursor-pointer">Edit</Button>
                 <Button
-                  onClick={() => deleteUserRating({ data: cocktail.id })}
+                  onClick={() => deleteUserRating({ data: id })}
                   variant="destructive"
                   className="cursor-pointer"
                 >
