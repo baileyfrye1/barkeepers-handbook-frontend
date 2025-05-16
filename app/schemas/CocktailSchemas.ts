@@ -17,6 +17,7 @@ const SingleCocktailSchema = z.object({
   name: z.string(),
   featured: z.boolean(),
   cocktailIngredients: z.array(IngredientSchema),
+  imageUrl: z.string(),
   tags: z.array(z.string()),
   ratingsData: CocktailRatingsSchema,
   createdAt: z.string().date(),

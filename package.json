@@ -11,7 +11,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.10.0",
+  "packageManager": "pnpm@10.11.0",
   "dependencies": {
     "@clerk/tanstack-react-start": "^0.14.5",
     "@hookform/resolvers": "^5.0.1",

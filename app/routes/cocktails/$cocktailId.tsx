@@ -33,7 +33,15 @@ function RouteComponent() {
         />
       </div>
       <div className="flex md:flex-row flex-col gap-8 mt-10">
-        <div className="h-[600px] w-full md:w-[500px] bg-gray-400 rounded-lg" />
+        {cocktail.imageUrl ? (
+          <img
+            className="rounded-lg w-full md:w-[500px]"
+            src={cocktail.imageUrl}
+          />
+        ) : (
+          // TODO: Remove this line once all cocktails have images
+          <div className="h-[600px] w-full md:w-[500px] bg-gray-400 rounded-lg" />
+        )}
         <section className="my-4">
           <h2 className="font-bold text-2xl">Ingredients</h2>
           <ul>
