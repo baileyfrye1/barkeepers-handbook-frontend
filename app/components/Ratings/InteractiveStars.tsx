@@ -34,7 +34,7 @@ const InteractiveStars = ({
   cocktailId,
 }: {
   ratingsData: CocktailRatingType;
-  cocktailId: string;
+  cocktailId: number;
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hovered, setHovered] = useState<number | null>();

@@ -13,7 +13,7 @@ const querySchema = z.object({
   search: z.string().optional(),
   page: z.coerce.number().int().default(1),
 });
-const idSchema = z.string().min(1);
+const idSchema = z.number();
 
 const fetchAllCocktails = createServerFn({ method: "GET" })
   .validator(querySchema)
@@ -70,7 +70,7 @@ const fetchSingleCocktail = createServerFn({ method: "GET" })
     return (await axiosClient.get<SingleCocktailType>(`cocktails/${id}`)).data;
   });
 
-export const singleCocktailQueryOptions = (cocktailId: string) => {
+export const singleCocktailQueryOptions = (cocktailId: number) => {
   return queryOptions({
     queryKey: ["cocktail", cocktailId],
     queryFn: () => fetchSingleCocktail({ data: cocktailId }),
