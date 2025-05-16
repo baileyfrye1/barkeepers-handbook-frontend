@@ -6,7 +6,7 @@ const FullRatingDetails = ({
   cocktailId,
 }: {
   ratingsData: CocktailRatingType;
-  cocktailId: string;
+  cocktailId: number;
 }) => {
   return (
     <div className="flex items-center gap-2">
