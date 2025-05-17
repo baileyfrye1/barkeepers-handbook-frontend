@@ -70,4 +70,9 @@ export const deleteUserRating = createServerFn()
     const authHeader = await createAuthHeader();
 
     await axiosClient.delete(`ratings/${id}`, authHeader);
+
+    return {
+      success: true,
+      message: "Successfully deleted rating",
+    };
   });

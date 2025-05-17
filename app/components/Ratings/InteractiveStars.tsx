@@ -28,6 +28,8 @@ import {
   SignUpButton,
   useUser,
 } from "@clerk/tanstack-react-start";
+import { useFormStatus } from "react-dom";
+import FormContainer from "../FormContainer";
 
 const InteractiveStars = ({
   ratingsData,
@@ -180,12 +182,7 @@ const InteractiveStars = ({
                   </SignUpButton>
                 </>
               ) : (
-                <Button
-                  className="cursor-pointer font-bold"
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </Button>
+                <SubmitRatingButton />
               )}
             </DialogFooter>
           </DialogContent>
@@ -286,9 +283,7 @@ const InteractiveStars = ({
               </>
             ) : (
               <>
-                <Button className="font-bold" onClick={handleSubmit}>
-                  Submit
-                </Button>
+                <SubmitRatingButton />
                 <DrawerClose asChild>
                   <Button
                     className="font-bold"
@@ -304,6 +299,17 @@ const InteractiveStars = ({
         </DrawerContent>
       </Drawer>
     </section>
+  );
+};
+
+const SubmitRatingButton = () => {
+  const { pending } = useFormStatus();
+  return (
+    <FormContainer action={submitRating}>
+      <Button type="submit" className="font-bold cursor-pointer">
+        {pending ? "Submitting" : "Submit"}
+      </Button>
+    </FormContainer>
   );
 };
 

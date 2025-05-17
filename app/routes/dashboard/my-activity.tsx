@@ -1,3 +1,4 @@
+import FormContainer from "@/components/FormContainer";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -8,6 +9,7 @@ import {
 } from "@/lib/queries/ratings";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect, useMatches } from "@tanstack/react-router";
+import { useFormStatus } from "react-dom";
 import { FaStar } from "react-icons/fa6";
 
 export const Route = createFileRoute("/dashboard/my-activity")({
@@ -52,13 +54,7 @@ function RouteComponent() {
               </p>
               <div className="flex flex-col gap-2">
                 <Button className="cursor-pointer">Edit</Button>
-                <Button
-                  onClick={() => deleteUserRating({ data: id })}
-                  variant="destructive"
-                  className="cursor-pointer"
-                >
-                  Delete
-                </Button>
+                <DeleteRatingButton id={id} />
               </div>
             </Card>
           );
@@ -67,3 +63,14 @@ function RouteComponent() {
     </div>
   );
 }
+
+const DeleteRatingButton = ({ id }: { id: number }) => {
+  const { pending } = useFormStatus();
+  return (
+    <FormContainer action={() => deleteUserRating({ data: id })}>
+      <Button type="submit" variant="destructive" className="cursor-pointer">
+        {pending ? "Deleting..." : "Delete"}
+      </Button>
+    </FormContainer>
+  );
+};
