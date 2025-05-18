@@ -16,7 +16,6 @@ import {
   useRouter,
 } from "@tanstack/react-router";
 import { useState } from "react";
-import { useFormStatus } from "react-dom";
 import { FaStar } from "react-icons/fa6";
 import { toast } from "sonner";
 
@@ -78,12 +77,13 @@ const DeleteRatingButton = ({ id }: { id: number }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
     const formData = new FormData(e.currentTarget);
     try {
       const response = await deleteUserRating({ data: formData });
       toast.success(response.message);
-      setIsLoading(false);
       await router.invalidate({ sync: true });
+      setIsLoading(false);
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Something went wrong",

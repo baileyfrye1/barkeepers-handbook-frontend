@@ -26,16 +26,11 @@ export const SubmitButton = ({
 };
 
 export const DeleteButton = ({ isLoading }: { isLoading: boolean }) => {
-  const isDesktop = useMediaQuery("(min-width: 768px)", {
-    initializeWithValue: false,
-    defaultValue: true,
-  });
-
   return (
     <Button
       variant="destructive"
       type="submit"
-      className={`font-bold cursor-pointer ${!isDesktop && "w-full"}`}
+      className="font-bold cursor-pointer w-full"
     >
       {isLoading ? (
         <>

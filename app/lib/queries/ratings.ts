@@ -91,7 +91,7 @@ export const deleteUserRating = createServerFn()
 
     return { id };
   })
-  .handler(async ({ data: id }) => {
+  .handler(async ({ data: { id } }) => {
     const authHeader = await createAuthHeader();
 
     await axiosClient.delete(`ratings/${id}`, authHeader);
