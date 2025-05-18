@@ -311,10 +311,12 @@ const InteractiveStars = ({
 };
 
 const SubmitRatingButton = ({
+  setIsOpen,
   isDesktop,
   cocktailId,
   rating,
 }: {
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isDesktop: boolean;
   cocktailId: number;
   rating: number;
@@ -326,14 +328,16 @@ const SubmitRatingButton = ({
         const formData = new FormData(e.currentTarget);
         const response = await submitRating({ data: formData });
         if (response.success === true) {
+          setIsOpen(false);
           toast.success(response.message);
         } else {
+          setIsOpen(false);
           toast.error(response.message);
         }
       }}
     >
       <input type="hidden" value={cocktailId} name="cocktailId" />
-      <input type="hidden" value={rating} name="rating" />
+      {/* <input type="hidden" value={rating} name="rating" /> */}
       <SubmitButton isDesktop={isDesktop} />
     </form>
   );
