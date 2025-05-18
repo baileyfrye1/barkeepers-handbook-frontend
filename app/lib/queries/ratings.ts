@@ -1,18 +1,9 @@
 import { getAuth } from "@clerk/tanstack-react-start/server";
 import axiosClient from "../axiosClient";
 import { createServerFn } from "@tanstack/react-start";
-import { z } from "zod";
 import { getWebRequest } from "@tanstack/react-start/server";
 import { queryOptions } from "@tanstack/react-query";
 import { AllUserRatingsType } from "@/schemas/RatingSchemas";
-
-// SCHEMAS
-const submitRatingSchema = z.object({
-  cocktailId: z.number(),
-  rating: z.number(),
-});
-
-const idSchema = z.number();
 
 // CREATE AUTH HEADER HELPER FUNCTION
 const createAuthHeader = async () => {

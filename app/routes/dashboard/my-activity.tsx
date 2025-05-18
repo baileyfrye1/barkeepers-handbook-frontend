@@ -8,10 +8,29 @@ import {
   userRatingsQueryOptions,
 } from "@/lib/queries/ratings";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute, redirect, useMatches } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogTitle,
+  DialogFooter,
+  DialogTrigger,
+  DialogHeader,
+  DialogContent,
+} from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerTitle,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerContent,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import useMediaQuery from "@/hooks/useMediaQuery";
+import StarRatingDisplayModal from "@/components/Ratings/Stars/StarRatingDisplayModal";
 
 export const Route = createFileRoute("/dashboard/my-activity")({
   beforeLoad: async () => await authStateFn(),
@@ -19,24 +38,19 @@ export const Route = createFileRoute("/dashboard/my-activity")({
 });
 
 function RouteComponent() {
-  const matches = useMatches();
-  const userId = matches.map((match) => match.context.userId);
-
-  if (!userId) {
-    redirect({ to: "/" });
-  }
-
   const { data } = useSuspenseQuery(userRatingsQueryOptions());
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  if (data.length === 0) {
-    return (
-      <div>
-        <h2 className="font-bold text-2xl">Ratings</h2>
-        <Separator className="mt-2 mb-4" />
-        <h2 className="text-lg">No ratings found</h2>
-      </div>
-    );
-  }
+  // if (data.length === 0) {
+  //   return (
+  //     <div>
+  //       <h2 className="font-bold text-2xl">Ratings</h2>
+  //       <Separator className="mt-2 mb-4" />
+  //       <h2 className="text-lg">No ratings found</h2>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div>
@@ -54,12 +68,31 @@ function RouteComponent() {
                 <span>{rating}</span>
               </p>
               <div className="flex flex-col gap-2">
-                <Button className="cursor-pointer">Edit</Button>
+                {isDesktop ? (
+                  <EditDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+                ) : (
+                  <EditDrawer isOpen={isOpen} setIsOpen={setIsOpen} />
+                )}
                 <DeleteRatingButton id={id} />
               </div>
             </Card>
           );
         })}
+        <Card className="p-4 gap-2">
+          <CardTitle>Daiquiri</CardTitle>
+          <p className="flex gap-2 items-center">
+            <FaStar />
+            <span>5</span>
+          </p>
+          <div className="flex flex-col gap-2">
+            {isDesktop ? (
+              <EditDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+            ) : (
+              <EditDrawer isOpen={isOpen} setIsOpen={setIsOpen} />
+            )}
+            <DeleteRatingButton id={90} />
+          </div>
+        </Card>
       </div>
     </div>
   );
@@ -75,8 +108,8 @@ const DeleteRatingButton = ({ id }: { id: number }) => {
     const formData = new FormData(e.currentTarget);
     try {
       const response = await deleteUserRating({ data: formData });
-      toast.success(response.message);
       queryClient.invalidateQueries({ queryKey: ["ratings"] });
+      toast.success(response.message);
       setIsLoading(false);
     } catch (error) {
       toast.error(
@@ -91,5 +124,72 @@ const DeleteRatingButton = ({ id }: { id: number }) => {
       <input type="hidden" value={id} name="id" />
       <DeleteButton isLoading={isLoading} />
     </form>
+  );
+};
+
+const EditDialog = ({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  const [ratingValue, setRatingValue] = useState<number>(0);
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <Button
+          className="cursor-pointer w-full"
+          onClick={() => setIsOpen(true)}
+        >
+          Edit
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Update Rating</DialogTitle>
+        </DialogHeader>
+        <StarRatingDisplayModal
+          ratingValue={ratingValue}
+          setRatingValue={setRatingValue}
+          isOpen={isOpen}
+        />
+        <DialogFooter>
+          <Button className="cursor-pointer">Submit</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const EditDrawer = ({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  const [ratingValue, setRatingValue] = useState<number>(0);
+  return (
+    <Drawer>
+      <DrawerTrigger>
+        <Button
+          className="cursor-pointer w-full"
+          onClick={() => setIsOpen(true)}
+        >
+          Edit
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>Update Rating</DrawerTitle>
+        </DrawerHeader>
+        <StarRatingDisplayModal
+          ratingValue={ratingValue}
+          setRatingValue={setRatingValue}
+          isOpen={isOpen}
+        />
+      </DrawerContent>
+    </Drawer>
   );
 };

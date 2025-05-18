@@ -22,14 +22,15 @@ import {
   DrawerContent,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Button } from "../ui/button";
 import {
   SignInButton,
   SignUpButton,
   useUser,
 } from "@clerk/tanstack-react-start";
-import FormContainer from "../FormContainer";
-import { SubmitButton } from "../Form/Buttons";
+import FormContainer from "../../FormContainer";
+import { SubmitButton } from "../../Form/Buttons";
+import { Button } from "@/components/ui/button";
+import StarRatingDisplay from "./StarRatingDisplay";
 
 const InteractiveStars = ({
   ratingsData,
@@ -41,6 +42,7 @@ const InteractiveStars = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hovered, setHovered] = useState<number | null>();
   const [ratingValue, setRatingValue] = useState<number>(0);
+  const starArray: number[] = Array.from({ length: 5 });
   const isDesktop = useMediaQuery("(min-width: 768px)", {
     initializeWithValue: false,
     defaultValue: true,
@@ -48,7 +50,6 @@ const InteractiveStars = ({
 
   const { isSignedIn } = useUser();
 
-  const starArray: number[] = Array.from({ length: 5 });
   const rounded = Math.round(ratingsData.averageRating * 2) / 2;
 
   if (isDesktop) {
@@ -99,11 +100,18 @@ const InteractiveStars = ({
                 }
               }
             })}
+            <StarRatingDisplay
+              ratingValue={ratingValue}
+              setRatingValue={setRatingValue}
+              rounded={rounded}
+              isOpen={isOpen}
+            />
           </span>
           <DialogContent>
             <DialogHeader className="text-left">
               <DialogTitle>Add Rating</DialogTitle>
             </DialogHeader>
+            {/* TODO: Abstract the star display to separate component to follow DRY better */}
             <span className="flex gap-2">
               {starArray.map((_, i) => {
                 if (hovered !== null && hovered !== undefined) {
@@ -226,31 +234,7 @@ const InteractiveStars = ({
           <DrawerHeader className="text-left">
             <DrawerTitle className="text-lg">Add Rating</DrawerTitle>
           </DrawerHeader>
-          <span className="flex gap-2 px-4 mb-8">
-            {starArray.map((_, i) => {
-              if (i + 1 <= ratingValue) {
-                return (
-                  <FaStar
-                    className="h-8 w-8"
-                    key={i}
-                    onMouseOver={() => setHovered(i + 1)}
-                    onMouseOut={() => setHovered(null)}
-                    onClick={() => setRatingValue(i + 1)}
-                  />
-                );
-              } else {
-                return (
-                  <FaRegStar
-                    key={i}
-                    className="cursor-pointer w-8 h-8"
-                    onMouseOver={() => setHovered(i)}
-                    onMouseOut={() => setHovered(null)}
-                    onClick={() => setRatingValue(i + 1)}
-                  />
-                );
-              }
-            })}
-          </span>
+          <span className="flex gap-2 px-4 mb-8"></span>
           <DrawerFooter>
             {!isSignedIn ? (
               <>

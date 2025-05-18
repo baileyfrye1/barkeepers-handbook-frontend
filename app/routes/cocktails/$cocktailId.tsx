@@ -56,7 +56,7 @@ function RouteComponent() {
           </ul>
 
           <h2 className="font-bold text-2xl mt-4">Steps</h2>
-          <ul></ul>
+          <ol></ol>
         </section>
       </div>
     </section>
