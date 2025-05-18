@@ -1,5 +1,4 @@
 import { DeleteButton } from "@/components/Form/Buttons";
-import FormContainer from "@/components/FormContainer";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -8,13 +7,8 @@ import {
   deleteUserRating,
   userRatingsQueryOptions,
 } from "@/lib/queries/ratings";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import {
-  createFileRoute,
-  redirect,
-  useMatches,
-  useRouter,
-} from "@tanstack/react-router";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute, redirect, useMatches } from "@tanstack/react-router";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { toast } from "sonner";
@@ -73,7 +67,7 @@ function RouteComponent() {
 
 const DeleteRatingButton = ({ id }: { id: number }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const router = useRouter();
+  const queryClient = useQueryClient();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -82,7 +76,7 @@ const DeleteRatingButton = ({ id }: { id: number }) => {
     try {
       const response = await deleteUserRating({ data: formData });
       toast.success(response.message);
-      await router.invalidate({ sync: true });
+      queryClient.invalidateQueries({ queryKey: ["rating"] });
       setIsLoading(false);
     } catch (error) {
       toast.error(
