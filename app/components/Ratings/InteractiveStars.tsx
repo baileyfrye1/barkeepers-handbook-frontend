@@ -41,29 +41,15 @@ const InteractiveStars = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hovered, setHovered] = useState<number | null>();
   const [ratingValue, setRatingValue] = useState<number>(0);
-  const router = useRouter();
   const isDesktop = useMediaQuery("(min-width: 768px)", {
     initializeWithValue: false,
     defaultValue: true,
   });
+
   const { isSignedIn } = useUser();
 
   const starArray: number[] = Array.from({ length: 5 });
   const rounded = Math.round(ratingsData.averageRating * 2) / 2;
-
-  // TODO: Add correct error handling. Right now the success message always happens even if there is an error submitting
-  const handleSubmit = async () => {
-    try {
-      submitRating({ data: { cocktailId, rating: ratingValue } });
-      setIsOpen(false);
-      toast.success("Successfully submitted rating");
-      await router.invalidate({ sync: true });
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      }
-    }
-  };
 
   if (isDesktop) {
     return (
@@ -183,6 +169,7 @@ const InteractiveStars = ({
                 </>
               ) : (
                 <SubmitRatingButton
+                  setIsOpen={setIsOpen}
                   isDesktop={isDesktop}
                   rating={ratingValue}
                   cocktailId={cocktailId}
@@ -288,6 +275,7 @@ const InteractiveStars = ({
             ) : (
               <>
                 <SubmitRatingButton
+                  setIsOpen={setIsOpen}
                   isDesktop={isDesktop}
                   cocktailId={cocktailId}
                   rating={ratingValue}
@@ -321,24 +309,32 @@ const SubmitRatingButton = ({
   cocktailId: number;
   rating: number;
 }) => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const formData = new FormData(e.currentTarget);
+    try {
+      const response = await submitRating({ data: formData });
+      toast.success(response.message);
+      await router.invalidate({ sync: true });
+      setIsLoading(false);
+      setIsOpen(false);
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Something went wrong",
+      );
+      setIsLoading(false);
+      setIsOpen(false);
+    }
+  };
   return (
-    <form
-      onSubmit={async (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const response = await submitRating({ data: formData });
-        if (response.success === true) {
-          setIsOpen(false);
-          toast.success(response.message);
-        } else {
-          setIsOpen(false);
-          toast.error(response.message);
-        }
-      }}
-    >
+    <form onSubmit={handleSubmit}>
       <input type="hidden" value={cocktailId} name="cocktailId" />
-      {/* <input type="hidden" value={rating} name="rating" /> */}
-      <SubmitButton isDesktop={isDesktop} />
+      <input type="hidden" value={rating} name="rating" />
+      <SubmitButton isDesktop={isDesktop} isLoading={isLoading} />
     </form>
   );
 };

@@ -44,7 +44,7 @@ export const submitRating = createServerFn({ method: "POST" })
     const rating = Number(formData.get("rating"));
 
     if (!cocktailId || !rating) {
-      throw new Error("Must submit cocktailId and rating");
+      throw new Error("Something went wrong. Please try again later");
     }
 
     return { cocktailId, rating };
