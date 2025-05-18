@@ -35,10 +35,21 @@ const createAuthHeader = async () => {
 
 // SERVER FUNCTIONS AND QUERY OPTIONS
 export const submitRating = createServerFn({ method: "POST" })
-  .validator(submitRatingSchema)
-  .handler(async ({ data }) => {
-    const { cocktailId, rating } = data;
+  .validator((formData) => {
+    if (!(formData instanceof FormData)) {
+      throw new Error("Invalid form data");
+    }
 
+    const cocktailId = Number(formData.get("cocktailId"));
+    const rating = Number(formData.get("rating"));
+
+    if (!cocktailId || !rating) {
+      throw new Error("Must submit cocktailId and rating");
+    }
+
+    return { cocktailId, rating };
+  })
+  .handler(async ({ data: { cocktailId, rating } }) => {
     const authHeader = await createAuthHeader();
 
     await axiosClient.post(
@@ -48,6 +59,8 @@ export const submitRating = createServerFn({ method: "POST" })
       },
       authHeader,
     );
+
+    return { success: true, message: "Rating submitted successfully" };
   });
 
 const fetchUserRatings = createServerFn({ method: "GET" }).handler(async () => {
@@ -65,7 +78,19 @@ export const userRatingsQueryOptions = () => {
 };
 
 export const deleteUserRating = createServerFn()
-  .validator(idSchema)
+  .validator((formData) => {
+    if (!(formData instanceof FormData)) {
+      throw new Error("Invalid form data");
+    }
+
+    const id = Number(formData.get("id"));
+
+    if (!id) {
+      throw new Error("Must submit id");
+    }
+
+    return { id };
+  })
   .handler(async ({ data: id }) => {
     const authHeader = await createAuthHeader();
 

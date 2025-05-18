@@ -26,7 +26,11 @@ const FormContainer = ({
     }
   }, [state]);
 
-  return <form action={formAction}>{children}</form>;
+  return (
+    <form action={formAction} method="POST">
+      {children}
+    </form>
+  );
 };
 
 export default FormContainer;

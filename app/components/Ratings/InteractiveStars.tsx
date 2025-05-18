@@ -28,8 +28,8 @@ import {
   SignUpButton,
   useUser,
 } from "@clerk/tanstack-react-start";
-import { useFormStatus } from "react-dom";
 import FormContainer from "../FormContainer";
+import { SubmitButton } from "../Form/Buttons";
 
 const InteractiveStars = ({
   ratingsData,
@@ -182,7 +182,11 @@ const InteractiveStars = ({
                   </SignUpButton>
                 </>
               ) : (
-                <SubmitRatingButton />
+                <SubmitRatingButton
+                  isDesktop={isDesktop}
+                  rating={ratingValue}
+                  cocktailId={cocktailId}
+                />
               )}
             </DialogFooter>
           </DialogContent>
@@ -283,7 +287,11 @@ const InteractiveStars = ({
               </>
             ) : (
               <>
-                <SubmitRatingButton />
+                <SubmitRatingButton
+                  isDesktop={isDesktop}
+                  cocktailId={cocktailId}
+                  rating={ratingValue}
+                />
                 <DrawerClose asChild>
                   <Button
                     className="font-bold"
@@ -302,14 +310,32 @@ const InteractiveStars = ({
   );
 };
 
-const SubmitRatingButton = () => {
-  const { pending } = useFormStatus();
+const SubmitRatingButton = ({
+  isDesktop,
+  cocktailId,
+  rating,
+}: {
+  isDesktop: boolean;
+  cocktailId: number;
+  rating: number;
+}) => {
   return (
-    <FormContainer action={submitRating}>
-      <Button type="submit" className="font-bold cursor-pointer">
-        {pending ? "Submitting" : "Submit"}
-      </Button>
-    </FormContainer>
+    <form
+      onSubmit={async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const response = await submitRating({ data: formData });
+        if (response.success === true) {
+          toast.success(response.message);
+        } else {
+          toast.error(response.message);
+        }
+      }}
+    >
+      <input type="hidden" value={cocktailId} name="cocktailId" />
+      <input type="hidden" value={rating} name="rating" />
+      <SubmitButton isDesktop={isDesktop} />
+    </form>
   );
 };
 

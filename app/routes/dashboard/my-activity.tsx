@@ -11,6 +11,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect, useMatches } from "@tanstack/react-router";
 import { useFormStatus } from "react-dom";
 import { FaStar } from "react-icons/fa6";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/dashboard/my-activity")({
   beforeLoad: async () => await authStateFn(),
@@ -67,10 +68,22 @@ function RouteComponent() {
 const DeleteRatingButton = ({ id }: { id: number }) => {
   const { pending } = useFormStatus();
   return (
-    <FormContainer action={() => deleteUserRating({ data: id })}>
+    <form
+      onSubmit={async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const response = await deleteUserRating({ data: formData });
+        if (response.success === true) {
+          toast.success(response.message);
+        } else {
+          toast.error(response.message);
+        }
+      }}
+    >
+      <input type="hidden" value={id} name="id" />
       <Button type="submit" variant="destructive" className="cursor-pointer">
         {pending ? "Deleting..." : "Delete"}
       </Button>
-    </FormContainer>
+    </form>
   );
 };
