@@ -76,7 +76,7 @@ const DeleteRatingButton = ({ id }: { id: number }) => {
     try {
       const response = await deleteUserRating({ data: formData });
       toast.success(response.message);
-      queryClient.invalidateQueries({ queryKey: ["rating"] });
+      queryClient.invalidateQueries({ queryKey: ["ratings"] });
       setIsLoading(false);
     } catch (error) {
       toast.error(
