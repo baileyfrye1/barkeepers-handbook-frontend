@@ -72,7 +72,7 @@ function RouteComponent() {
                 {isDesktop ? (
                   <EditDialog isOpen={isOpen} setIsOpen={setIsOpen} id={id} />
                 ) : (
-                  <EditDrawer isOpen={isOpen} setIsOpen={setIsOpen} />
+                  <EditDrawer isOpen={isOpen} setIsOpen={setIsOpen} id={id} />
                 )}
                 <DeleteRatingButton id={id} />
               </div>
@@ -143,7 +143,11 @@ const EditDialog = ({
           isOpen={isOpen}
         />
         <DialogFooter>
-          <UpdateRatingButton rating={ratingValue} id={id} />
+          <UpdateRatingButton
+            rating={ratingValue}
+            id={id}
+            setIsOpen={setIsOpen}
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -153,9 +157,11 @@ const EditDialog = ({
 const EditDrawer = ({
   isOpen,
   setIsOpen,
+  id,
 }: {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  id: number;
 }) => {
   const [ratingValue, setRatingValue] = useState<number>(0);
   return (
@@ -177,12 +183,27 @@ const EditDrawer = ({
           setRatingValue={setRatingValue}
           isOpen={isOpen}
         />
+        <DrawerFooter>
+          <UpdateRatingButton
+            rating={ratingValue}
+            id={id}
+            setIsOpen={setIsOpen}
+          />
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );
 };
 
-const UpdateRatingButton = ({ id, rating }: { id: number; rating: number }) => {
+const UpdateRatingButton = ({
+  id,
+  rating,
+  setIsOpen,
+}: {
+  id: number;
+  rating: number;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const queryClient = useQueryClient();
 
@@ -192,14 +213,16 @@ const UpdateRatingButton = ({ id, rating }: { id: number; rating: number }) => {
     const formData = new FormData(e.currentTarget);
     try {
       const response = await updateRating({ data: formData });
-      queryClient.invalidateQueries({ queryKey: ["ratings"] });
       toast.success(response.message);
+      queryClient.invalidateQueries({ queryKey: ["ratings"] });
       setIsLoading(false);
+      setIsOpen(false);
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Something went wrong",
       );
       setIsLoading(false);
+      setIsOpen(false);
     }
   };
 
