@@ -77,7 +77,7 @@ export const deleteUserRating = createServerFn()
     const id = Number(formData.get("id"));
 
     if (!id) {
-      throw new Error("Must submit id");
+      throw new Error("Something went wrong. Please try again later");
     }
 
     return { id };
@@ -91,4 +91,27 @@ export const deleteUserRating = createServerFn()
       success: true,
       message: "Successfully deleted rating",
     };
+  });
+
+export const updateRating = createServerFn()
+  .validator((formData) => {
+    if (!(formData instanceof FormData)) {
+      throw new Error("Invalid form data");
+    }
+
+    const rating = Number(formData.get("rating"));
+    const id = Number(formData.get("id"));
+
+    if (!rating || !id) {
+      throw new Error("Something went wrong. Please try again later");
+    }
+
+    return { rating, id };
+  })
+  .handler(async ({ data: { rating, id } }) => {
+    const authHeader = await createAuthHeader();
+
+    await axiosClient.patch(`ratings/${id}`, { rating }, authHeader);
+
+    return { success: true, message: "Rating updated successfully" };
   });

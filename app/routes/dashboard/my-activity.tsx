@@ -1,10 +1,11 @@
-import { DeleteButton } from "@/components/Form/Buttons";
+import { DeleteButton, SubmitButton } from "@/components/Form/Buttons";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { authStateFn } from "@/lib/actions";
 import {
   deleteUserRating,
+  updateRating,
   userRatingsQueryOptions,
 } from "@/lib/queries/ratings";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
@@ -42,15 +43,15 @@ function RouteComponent() {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  // if (data.length === 0) {
-  //   return (
-  //     <div>
-  //       <h2 className="font-bold text-2xl">Ratings</h2>
-  //       <Separator className="mt-2 mb-4" />
-  //       <h2 className="text-lg">No ratings found</h2>
-  //     </div>
-  //   );
-  // }
+  if (data.length === 0) {
+    return (
+      <div>
+        <h2 className="font-bold text-2xl">Ratings</h2>
+        <Separator className="mt-2 mb-4" />
+        <h2 className="text-lg">No ratings found</h2>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -69,7 +70,7 @@ function RouteComponent() {
               </p>
               <div className="flex flex-col gap-2">
                 {isDesktop ? (
-                  <EditDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+                  <EditDialog isOpen={isOpen} setIsOpen={setIsOpen} id={id} />
                 ) : (
                   <EditDrawer isOpen={isOpen} setIsOpen={setIsOpen} />
                 )}
@@ -78,21 +79,6 @@ function RouteComponent() {
             </Card>
           );
         })}
-        <Card className="p-4 gap-2">
-          <CardTitle>Daiquiri</CardTitle>
-          <p className="flex gap-2 items-center">
-            <FaStar />
-            <span>5</span>
-          </p>
-          <div className="flex flex-col gap-2">
-            {isDesktop ? (
-              <EditDialog isOpen={isOpen} setIsOpen={setIsOpen} />
-            ) : (
-              <EditDrawer isOpen={isOpen} setIsOpen={setIsOpen} />
-            )}
-            <DeleteRatingButton id={90} />
-          </div>
-        </Card>
       </div>
     </div>
   );
@@ -130,9 +116,11 @@ const DeleteRatingButton = ({ id }: { id: number }) => {
 const EditDialog = ({
   isOpen,
   setIsOpen,
+  id,
 }: {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  id: number;
 }) => {
   const [ratingValue, setRatingValue] = useState<number>(0);
   return (
@@ -155,7 +143,7 @@ const EditDialog = ({
           isOpen={isOpen}
         />
         <DialogFooter>
-          <Button className="cursor-pointer">Submit</Button>
+          <UpdateRatingButton rating={ratingValue} id={id} />
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -191,5 +179,35 @@ const EditDrawer = ({
         />
       </DrawerContent>
     </Drawer>
+  );
+};
+
+const UpdateRatingButton = ({ id, rating }: { id: number; rating: number }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const queryClient = useQueryClient();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const formData = new FormData(e.currentTarget);
+    try {
+      const response = await updateRating({ data: formData });
+      queryClient.invalidateQueries({ queryKey: ["ratings"] });
+      toast.success(response.message);
+      setIsLoading(false);
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Something went wrong",
+      );
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input type="hidden" value={id} name="id" />
+      <input type="hidden" value={rating} name="rating" />
+      <SubmitButton isLoading={isLoading} />
+    </form>
   );
 };
