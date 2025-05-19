@@ -4,6 +4,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getWebRequest } from "@tanstack/react-start/server";
 import { queryOptions } from "@tanstack/react-query";
 import { AllUserRatingsType } from "@/schemas/RatingSchemas";
+import { AxiosError } from "axios";
 
 // CREATE AUTH HEADER HELPER FUNCTION
 const createAuthHeader = async () => {
@@ -41,17 +42,24 @@ export const submitRating = createServerFn({ method: "POST" })
     return { cocktailId, rating };
   })
   .handler(async ({ data: { cocktailId, rating } }) => {
-    const authHeader = await createAuthHeader();
+    try {
+      const authHeader = await createAuthHeader();
 
-    await axiosClient.post(
-      `ratings/${cocktailId}`,
-      {
-        rating,
-      },
-      authHeader,
-    );
-
-    return { success: true, message: "Rating submitted successfully" };
+      const response = await axiosClient.post(
+        `ratings/${cocktailId}`,
+        {
+          rating,
+        },
+        authHeader,
+      );
+      return { success: true, message: "Rating submitted successfully" };
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          throw new Error("User has already submitted a rating");
+        }
+      }
+    }
   });
 
 const fetchUserRatings = createServerFn({ method: "GET" }).handler(async () => {
