@@ -4,7 +4,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuContent,
-} from '../ui/dropdown-menu';
+} from "../ui/dropdown-menu";
 import {
   SignedIn,
   SignedOut,
@@ -12,10 +12,10 @@ import {
   SignOutButton,
   SignUpButton,
   useUser,
-} from '@clerk/tanstack-react-start';
-import { Link } from '@tanstack/react-router';
-import { User } from 'lucide-react';
-import { Button } from '../ui/button';
+} from "@clerk/tanstack-react-start";
+import { Link } from "@tanstack/react-router";
+import { User } from "lucide-react";
+import { Button } from "../ui/button";
 
 const UserDropdown = () => {
   const { user } = useUser();
@@ -23,23 +23,23 @@ const UserDropdown = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant='ghost'
-          className='cursor-pointer flex gap-4 max-w-[100px]'
+          variant="ghost"
+          className="cursor-pointer flex gap-4 max-w-[100px]"
         >
           {user?.hasImage ? (
-            <img src={user?.imageUrl} className='h-6 rounded-full' />
+            <img src={user?.imageUrl} className="h-6 rounded-full" />
           ) : (
-            <User className='h-6! w-6! bg-primary rounded-full text-white' />
+            <User className="h-6! w-6! bg-primary rounded-full text-white" />
           )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <SignedIn>
           <DropdownMenuItem>
-            <Link to='/dashboard'>Dashboard</Link>
+            <Link to="/dashboard">Dashboard</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link to='/profile'>Profile</Link>
+            <Link to="/profile">Profile</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <SignOutButton />
@@ -47,10 +47,10 @@ const UserDropdown = () => {
         </SignedIn>
         <SignedOut>
           <DropdownMenuItem>
-            <SignInButton>Log In</SignInButton>
+            <SignInButton mode="modal">Log In</SignInButton>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <SignUpButton>Sign Up</SignUpButton>
+            <SignUpButton mode="modal">Sign Up</SignUpButton>
           </DropdownMenuItem>
         </SignedOut>
       </DropdownMenuContent>

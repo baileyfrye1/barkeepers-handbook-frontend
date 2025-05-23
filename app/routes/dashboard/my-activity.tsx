@@ -13,25 +13,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { toast } from "sonner";
-import {
-  Dialog,
-  DialogTitle,
-  DialogFooter,
-  DialogTrigger,
-  DialogHeader,
-  DialogContent,
-} from "@/components/ui/dialog";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerTitle,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerContent,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import useMediaQuery from "@/hooks/useMediaQuery";
-import StarDisplay from "@/components/Ratings/Stars/StarDisplay";
+import RatingModal from "@/components/Ratings/RatingModal";
 
 export const Route = createFileRoute("/dashboard/my-activity")({
   beforeLoad: async () => await authStateFn(),
@@ -40,8 +22,8 @@ export const Route = createFileRoute("/dashboard/my-activity")({
 
 function RouteComponent() {
   const { data } = useSuspenseQuery(userRatingsQueryOptions());
-  const isDesktop = useMediaQuery("(min-width: 768px)");
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [userRating, setUserRating] = useState<number>(0);
 
   if (data.length === 0) {
     return (
@@ -58,22 +40,32 @@ function RouteComponent() {
       <h2 className="font-bold text-2xl">Ratings</h2>
       <Separator className="my-4" />
       <div className="grid auto-fit-[2] gap-4">
-        {data.map((userRating) => {
-          const { rating, cocktail, id } = userRating;
+        {data.map((userCocktailRating) => {
+          const { rating: cocktailRating, cocktail, id } = userCocktailRating;
           return (
             <Card key={cocktail.id} className="p-4 gap-2">
               <img className="rounded-lg" src={cocktail.image} />
               <CardTitle>{cocktail.name}</CardTitle>
               <p className="flex gap-2 items-center">
                 <FaStar />
-                <span>{rating}</span>
+                <span>{cocktailRating}</span>
               </p>
               <div className="flex flex-col gap-2">
-                {isDesktop ? (
-                  <EditDialog isOpen={isOpen} setIsOpen={setIsOpen} id={id} />
-                ) : (
-                  <EditDrawer isOpen={isOpen} setIsOpen={setIsOpen} id={id} />
-                )}
+                <RatingModal
+                  isOpen={isOpen}
+                  setIsOpen={setIsOpen}
+                  title="Update Rating"
+                  cocktailId={cocktail.id}
+                  userRating={userRating}
+                  setUserRating={setUserRating}
+                >
+                  <Button
+                    className="cursor-pointer w-full"
+                    onClick={() => setIsOpen(true)}
+                  >
+                    Edit
+                  </Button>
+                </RatingModal>
                 <DeleteRatingButton id={id} />
               </div>
             </Card>
@@ -109,90 +101,6 @@ const DeleteRatingButton = ({ id }: { id: number }) => {
       <input type="hidden" value={id} name="id" />
       <DeleteButton isLoading={isLoading} />
     </form>
-  );
-};
-
-const EditDialog = ({
-  isOpen,
-  setIsOpen,
-  id,
-}: {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  id: number;
-}) => {
-  const [ratingValue, setRatingValue] = useState<number>(0);
-  return (
-    <Dialog>
-      <DialogTrigger>
-        <Button
-          className="cursor-pointer w-full"
-          onClick={() => setIsOpen(true)}
-        >
-          Edit
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Update Rating</DialogTitle>
-        </DialogHeader>
-        <StarDisplay
-          ratingValue={ratingValue}
-          setRatingValue={setRatingValue}
-          rounded={5}
-          size="dialog"
-        />
-        <DialogFooter>
-          <UpdateRatingButton
-            rating={ratingValue}
-            id={id}
-            setIsOpen={setIsOpen}
-          />
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-};
-
-const EditDrawer = ({
-  isOpen,
-  setIsOpen,
-  id,
-}: {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  id: number;
-}) => {
-  const [ratingValue, setRatingValue] = useState<number>(0);
-  return (
-    <Drawer>
-      <DrawerTrigger asChild>
-        <Button
-          className="cursor-pointer w-full"
-          onClick={() => setIsOpen(true)}
-        >
-          Edit
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className="pb-2">
-          <DrawerTitle>Update Rating</DrawerTitle>
-        </DrawerHeader>
-        <StarDisplay
-          ratingValue={ratingValue}
-          setRatingValue={setRatingValue}
-          rounded={5}
-          size="drawer"
-        />
-        <DrawerFooter>
-          <UpdateRatingButton
-            rating={ratingValue}
-            id={id}
-            setIsOpen={setIsOpen}
-          />
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
   );
 };
 
