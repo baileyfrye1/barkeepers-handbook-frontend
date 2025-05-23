@@ -1,5 +1,5 @@
 import { CocktailRatingType } from "@/schemas/CocktailSchemas";
-import InteractiveStars from "./Stars/ResponsiveRatingModal";
+import ResponsiveRatingModal from "./Stars/ResponsiveRatingModal";
 
 const FullRatingDetails = ({
   ratingsData,
@@ -10,7 +10,10 @@ const FullRatingDetails = ({
 }) => {
   return (
     <div className="flex items-center gap-2">
-      <InteractiveStars ratingsData={ratingsData} cocktailId={cocktailId} />
+      <ResponsiveRatingModal
+        ratingsData={ratingsData}
+        cocktailId={cocktailId}
+      />
       <p>{`${ratingsData.averageRating} (${ratingsData.totalRatings} reviews)`}</p>
     </div>
   );

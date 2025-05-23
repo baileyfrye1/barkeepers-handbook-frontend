@@ -139,7 +139,8 @@ const EditDialog = ({
         <StarDisplay
           ratingValue={ratingValue}
           setRatingValue={setRatingValue}
-          isOpen={isOpen}
+          rounded={5}
+          size="dialog"
         />
         <DialogFooter>
           <UpdateRatingButton
@@ -165,7 +166,7 @@ const EditDrawer = ({
   const [ratingValue, setRatingValue] = useState<number>(0);
   return (
     <Drawer>
-      <DrawerTrigger>
+      <DrawerTrigger asChild>
         <Button
           className="cursor-pointer w-full"
           onClick={() => setIsOpen(true)}
@@ -174,13 +175,14 @@ const EditDrawer = ({
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <DrawerHeader>
+        <DrawerHeader className="pb-2">
           <DrawerTitle>Update Rating</DrawerTitle>
         </DrawerHeader>
         <StarDisplay
           ratingValue={ratingValue}
           setRatingValue={setRatingValue}
-          isOpen={isOpen}
+          rounded={5}
+          size="drawer"
         />
         <DrawerFooter>
           <UpdateRatingButton

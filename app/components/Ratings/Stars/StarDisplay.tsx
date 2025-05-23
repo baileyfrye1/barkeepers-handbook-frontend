@@ -8,7 +8,6 @@ type StarRatingProps = {
   setRatingValue: React.Dispatch<React.SetStateAction<number>>;
   rounded: number;
   size?: string;
-  isOpen?: boolean;
   withWrapper?: boolean;
 };
 
@@ -16,7 +15,8 @@ const StarRatingVariants = cva("cursor-pointer", {
   variants: {
     size: {
       default: "h-5 w-5",
-      modal: "h-6 w-6",
+      dialog: "h-6 w-6",
+      drawer: "h-7 w-7",
       sm: "h-4 w-4",
     },
   },
@@ -30,7 +30,6 @@ const StarRatingDisplay = ({
   setRatingValue,
   rounded,
   size = "default",
-  isOpen = false,
   withWrapper = false,
 }: StarRatingProps & VariantProps<typeof StarRatingVariants>) => {
   const starArray: number[] = Array.from({ length: 5 });
@@ -49,7 +48,11 @@ const StarRatingDisplay = ({
           <FaStar {...sharedProps} onClick={() => setRatingValue(i + 1)} />
         </TriggerWrapper>
       ) : filled ? (
-        <FaStar {...sharedProps} key={i} />
+        <FaStar
+          {...sharedProps}
+          key={i}
+          onClick={() => setRatingValue(i + 1)}
+        />
       ) : (
         <FaRegStar {...sharedProps} key={i} />
       );
@@ -59,7 +62,10 @@ const StarRatingDisplay = ({
       return baseStar(i < hovered);
     }
 
-    if (i + 1 <= ratingValue || i + 1 <= rounded) {
+    const displayRating =
+      size === "dialog" || size === "drawer" ? ratingValue : rounded;
+
+    if (i + 1 <= displayRating) {
       return <FaStar key={i} {...sharedProps} />;
     } else if (i + 0.5 === rounded) {
       return <FaRegStarHalfStroke key={i} {...sharedProps} />;
@@ -68,7 +74,13 @@ const StarRatingDisplay = ({
     return baseStar(false);
   };
 
-  return <span className="flex">{starArray.map((_, i) => getStar(i))}</span>;
+  return (
+    <span
+      className={`flex ${size === "drawer" ? "px-4" : ""} ${size === "drawer" || size === "dialog" ? "gap-2" : ""}`}
+    >
+      {starArray.map((_, i) => getStar(i))}
+    </span>
+  );
 };
 
 export default StarRatingDisplay;

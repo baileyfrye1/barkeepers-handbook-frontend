@@ -1,4 +1,3 @@
-import useMediaQuery from "@/hooks/useMediaQuery";
 import { Button } from "../ui/button";
 import { FaArrowRotateRight } from "react-icons/fa6";
 

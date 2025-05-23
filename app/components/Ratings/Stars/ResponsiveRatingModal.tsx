@@ -8,7 +8,6 @@ import {
   Dialog,
   DialogTitle,
   DialogFooter,
-  DialogTrigger,
   DialogHeader,
   DialogContent,
 } from "@/components/ui/dialog";
@@ -19,7 +18,6 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerContent,
-  DrawerTrigger,
 } from "@/components/ui/drawer";
 import {
   SignInButton,
@@ -56,7 +54,6 @@ const ResponsiveRatingModal = ({
             ratingValue={ratingValue}
             setRatingValue={setRatingValue}
             rounded={rounded}
-            isOpen={isOpen}
             size="sm"
             withWrapper
           />
@@ -68,8 +65,7 @@ const ResponsiveRatingModal = ({
               ratingValue={ratingValue}
               setRatingValue={setRatingValue}
               rounded={rounded}
-              isOpen={isOpen}
-              size="modal"
+              size="dialog"
             />
             <DialogFooter>
               {!isSignedIn ? (
@@ -114,19 +110,17 @@ const ResponsiveRatingModal = ({
           ratingValue={ratingValue}
           setRatingValue={setRatingValue}
           rounded={rounded}
-          isOpen={isOpen}
           withWrapper
         />
         <DrawerContent>
-          <DrawerHeader className="text-left">
+          <DrawerHeader className="text-left pb-2">
             <DrawerTitle className="text-lg">Add Rating</DrawerTitle>
           </DrawerHeader>
           <StarDisplay
             ratingValue={ratingValue}
             setRatingValue={setRatingValue}
             rounded={rounded}
-            isOpen={isOpen}
-            size="modal"
+            size="drawer"
           />
           <DrawerFooter>
             {!isSignedIn ? (
