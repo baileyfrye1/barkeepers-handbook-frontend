@@ -45,7 +45,7 @@ export const submitRating = createServerFn({ method: "POST" })
     try {
       const authHeader = await createAuthHeader();
 
-      const response = await axiosClient.post(
+      await axiosClient.post(
         `ratings/${cocktailId}`,
         {
           rating,
@@ -56,9 +56,17 @@ export const submitRating = createServerFn({ method: "POST" })
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 409) {
-          throw new Error("User has already submitted a rating");
+          return {
+            success: false,
+            message: "User has already submitted a rating",
+          };
         }
       }
+
+      return {
+        success: false,
+        message: "Something went wrong. Please try again later",
+      };
     }
   });
 

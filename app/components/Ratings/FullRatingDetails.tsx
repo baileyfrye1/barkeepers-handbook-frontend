@@ -1,5 +1,5 @@
 import { CocktailRatingType } from "@/schemas/CocktailSchemas";
-import InteractiveStars from "./Stars/InteractiveStars";
+import InteractiveStars from "./Stars/ResponsiveRatingModal";
 
 const FullRatingDetails = ({
   ratingsData,

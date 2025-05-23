@@ -31,7 +31,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import useMediaQuery from "@/hooks/useMediaQuery";
-import StarRatingDisplayModal from "@/components/Ratings/Stars/StarRatingDisplayModal";
+import StarDisplay from "@/components/Ratings/Stars/StarDisplay";
 
 export const Route = createFileRoute("/dashboard/my-activity")({
   beforeLoad: async () => await authStateFn(),
@@ -92,17 +92,16 @@ const DeleteRatingButton = ({ id }: { id: number }) => {
     e.preventDefault();
     setIsLoading(true);
     const formData = new FormData(e.currentTarget);
-    try {
-      const response = await deleteUserRating({ data: formData });
+    const response = await deleteUserRating({ data: formData });
+
+    if (response.success === true) {
       queryClient.invalidateQueries({ queryKey: ["ratings"] });
       toast.success(response.message);
-      setIsLoading(false);
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Something went wrong",
-      );
-      setIsLoading(false);
+    } else {
+      toast.error(response.message);
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -137,7 +136,7 @@ const EditDialog = ({
         <DialogHeader>
           <DialogTitle>Update Rating</DialogTitle>
         </DialogHeader>
-        <StarRatingDisplayModal
+        <StarDisplay
           ratingValue={ratingValue}
           setRatingValue={setRatingValue}
           isOpen={isOpen}
@@ -178,7 +177,7 @@ const EditDrawer = ({
         <DrawerHeader>
           <DrawerTitle>Update Rating</DrawerTitle>
         </DrawerHeader>
-        <StarRatingDisplayModal
+        <StarDisplay
           ratingValue={ratingValue}
           setRatingValue={setRatingValue}
           isOpen={isOpen}
@@ -211,19 +210,17 @@ const UpdateRatingButton = ({
     e.preventDefault();
     setIsLoading(true);
     const formData = new FormData(e.currentTarget);
-    try {
-      const response = await updateRating({ data: formData });
+    const response = await updateRating({ data: formData });
+
+    if (response.success === true) {
       toast.success(response.message);
       queryClient.invalidateQueries({ queryKey: ["ratings"] });
-      setIsLoading(false);
-      setIsOpen(false);
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Something went wrong",
-      );
-      setIsLoading(false);
-      setIsOpen(false);
+    } else {
+      toast.error(response.message);
     }
+
+    setIsLoading(false);
+    setIsOpen(false);
   };
 
   return (
