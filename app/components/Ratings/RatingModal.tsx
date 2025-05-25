@@ -20,14 +20,10 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
-import { submitRating } from "@/lib/queries/ratings";
-import { useRouter } from "@tanstack/react-router";
-import { useState } from "react";
-import { toast } from "sonner";
-import { SubmitButton } from "../Form/Buttons";
 import { CocktailRatingType } from "@/schemas/CocktailSchemas";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import useMediaQuery from "@/hooks/useMediaQuery";
+import { SubmitRatingButton, UpdateRatingButton } from "./ActionButtons";
 
 type RatingModalProps = {
   title: string;
@@ -38,6 +34,8 @@ type RatingModalProps = {
   cocktailId: number;
   ratingsData?: CocktailRatingType;
   children?: React.ReactNode;
+  type: "create" | "update";
+  ratingId?: number;
 };
 
 const RatingModal = ({
@@ -49,6 +47,8 @@ const RatingModal = ({
   cocktailId,
   ratingsData,
   children,
+  type,
+  ratingId,
 }: RatingModalProps) => {
   const { isSignedIn } = useUser();
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -72,6 +72,7 @@ const RatingModal = ({
               size="sm"
               ratingsData={ratingsData}
               setUserRating={setUserRating}
+              editable={false}
             />
           )}
         </Trigger>
@@ -85,8 +86,8 @@ const RatingModal = ({
             ratingsData={ratingsData}
             setUserRating={setUserRating}
             className="mb-4"
+            editable={true}
           />
-          {/* TODO: Update footer to allow for submit or update. Potentially refactor rating button to allow for a variant to choose correct button */}
           <Footer>
             {!isSignedIn ? (
               <>
@@ -108,11 +109,18 @@ const RatingModal = ({
                   </Button>
                 </SignUpButton>
               </>
-            ) : (
+            ) : type === "create" ? (
               <SubmitRatingButton
                 setIsOpen={setIsOpen}
                 rating={userRating}
                 cocktailId={cocktailId}
+                className={`${!isDesktop && "w-full"}`}
+              />
+            ) : (
+              <UpdateRatingButton
+                setIsOpen={setIsOpen}
+                rating={userRating}
+                ratingId={ratingId!}
                 className={`${!isDesktop && "w-full"}`}
               />
             )}
@@ -120,45 +128,6 @@ const RatingModal = ({
         </Content>
       </Wrapper>
     </>
-  );
-};
-
-const SubmitRatingButton = ({
-  setIsOpen,
-  cocktailId,
-  rating,
-  className,
-}: {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  cocktailId: number;
-  rating: number;
-  className?: string;
-}) => {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    const formData = new FormData(e.currentTarget);
-    const response = await submitRating({ data: formData });
-
-    if (response.success === true) {
-      toast.success(response.message);
-      await router.invalidate();
-    } else {
-      toast.error(response.message);
-    }
-
-    setIsLoading(false);
-    setIsOpen(false);
-  };
-  return (
-    <form onSubmit={handleSubmit}>
-      <input type="hidden" value={cocktailId} name="cocktailId" />
-      <input type="hidden" value={rating} name="rating" />
-      <SubmitButton className={className} isLoading={isLoading} />
-    </form>
   );
 };
 

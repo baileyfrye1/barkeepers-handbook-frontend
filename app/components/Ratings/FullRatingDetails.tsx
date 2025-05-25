@@ -20,7 +20,9 @@ const FullRatingDetails = ({
         ratingsData={ratingsData}
         userRating={userRating}
         setUserRating={setUserRating}
+        editable={false}
       />
+
       <p>{`${ratingsData.averageRating} (${ratingsData.totalRatings} reviews)`}</p>
 
       <RatingModal
@@ -31,8 +33,11 @@ const FullRatingDetails = ({
         title="Add Rating"
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        type="create"
       >
-        <p className="cursor-pointer underline">Add Rating</p>
+        <p className="cursor-pointer underline underline-offset-4">
+          Add Rating
+        </p>
       </RatingModal>
     </div>
   );

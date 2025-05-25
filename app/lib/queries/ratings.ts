@@ -116,18 +116,18 @@ export const updateRating = createServerFn()
     }
 
     const rating = Number(formData.get("rating"));
-    const id = Number(formData.get("id"));
+    const ratingId = Number(formData.get("ratingId"));
 
-    if (!rating || !id) {
+    if (!rating || !ratingId) {
       throw new Error("Something went wrong. Please try again later");
     }
 
-    return { rating, id };
+    return { rating, ratingId };
   })
-  .handler(async ({ data: { rating, id } }) => {
+  .handler(async ({ data: { rating, ratingId } }) => {
     const authHeader = await createAuthHeader();
 
-    await axiosClient.patch(`ratings/${id}`, { rating }, authHeader);
+    await axiosClient.patch(`ratings/${ratingId}`, { rating }, authHeader);
 
     return { success: true, message: "Rating updated successfully" };
   });

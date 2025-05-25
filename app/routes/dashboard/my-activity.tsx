@@ -1,19 +1,14 @@
-import { DeleteButton, SubmitButton } from "@/components/Form/Buttons";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { authStateFn } from "@/lib/actions";
-import {
-  deleteUserRating,
-  updateRating,
-  userRatingsQueryOptions,
-} from "@/lib/queries/ratings";
-import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { userRatingsQueryOptions } from "@/lib/queries/ratings";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa6";
-import { toast } from "sonner";
 import RatingModal from "@/components/Ratings/RatingModal";
+import { DeleteRatingButton } from "@/components/Ratings/ActionButtons";
 
 export const Route = createFileRoute("/dashboard/my-activity")({
   beforeLoad: async () => await authStateFn(),
@@ -58,6 +53,7 @@ function RouteComponent() {
                   cocktailId={cocktail.id}
                   userRating={userRating}
                   setUserRating={setUserRating}
+                  type="update"
                 >
                   <Button
                     className="cursor-pointer w-full"
@@ -75,69 +71,3 @@ function RouteComponent() {
     </div>
   );
 }
-
-const DeleteRatingButton = ({ id }: { id: number }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const queryClient = useQueryClient();
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    const formData = new FormData(e.currentTarget);
-    const response = await deleteUserRating({ data: formData });
-
-    if (response.success === true) {
-      queryClient.invalidateQueries({ queryKey: ["ratings"] });
-      toast.success(response.message);
-    } else {
-      toast.error(response.message);
-    }
-
-    setIsLoading(false);
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input type="hidden" value={id} name="id" />
-      <DeleteButton isLoading={isLoading} />
-    </form>
-  );
-};
-
-const UpdateRatingButton = ({
-  id,
-  rating,
-  setIsOpen,
-}: {
-  id: number;
-  rating: number;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const queryClient = useQueryClient();
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    const formData = new FormData(e.currentTarget);
-    const response = await updateRating({ data: formData });
-
-    if (response.success === true) {
-      toast.success(response.message);
-      queryClient.invalidateQueries({ queryKey: ["ratings"] });
-    } else {
-      toast.error(response.message);
-    }
-
-    setIsLoading(false);
-    setIsOpen(false);
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input type="hidden" value={id} name="id" />
-      <input type="hidden" value={rating} name="rating" />
-      <SubmitButton isLoading={isLoading} />
-    </form>
-  );
-};
