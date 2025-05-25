@@ -53,6 +53,7 @@ function RouteComponent() {
                   cocktailId={cocktail.id}
                   userRating={userRating}
                   setUserRating={setUserRating}
+                  ratingId={id}
                   type="update"
                 >
                   <Button
