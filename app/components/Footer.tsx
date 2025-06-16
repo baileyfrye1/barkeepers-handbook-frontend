@@ -11,9 +11,9 @@ const Footer = () => {
           <div>
             <Link className="flex gap-2 items-center" to="/">
               <BookOpen />
-              <h1 className="text-base font-bold uppercase">
+              <h3 className="text-base font-bold uppercase">
                 Barkeepers Handbook
-              </h1>
+              </h3>
             </Link>
           </div>
           <div>
