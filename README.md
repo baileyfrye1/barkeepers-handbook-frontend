@@ -16,6 +16,8 @@
   <img src="./assets/barkeepers-handbook-screenshot.png" alt="screenshot" />
 </div>
 
+Live Site URL: [barkeepershandbook.com](barkeepershandbook.com)
+
 <!-- TechStack -->
 
 ### Tech Stack
